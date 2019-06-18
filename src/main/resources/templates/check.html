@@ -1,0 +1,18 @@
+<h3 class="title">检测</h3>
+<div>
+    <button ng-click="startCheck()">开始检测</button>
+    <div>
+        <h3>配置</h3>
+        转速：<input type="text" ng-model="config.speed"><br>
+        超时：<input type="text" ng-model="config.overtime"><br>
+        <button ng-click="saveConfig()">保存</button>
+    </div>
+    <ul>
+        <li ng-repeat="d in dataList">
+            VIN：{{d.vin}}<br>
+            定位：{{d.isLocate}}<span ng-if="!d.isLocate">-----校验失败</span><br>
+            时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}<span ng-if="d.isOverTime">-----校验失败</span><br>
+            转速：{{d.speed}}<span ng-if="d.speed!=config.speed">-----校验失败</span><br>
+        </li>
+    </ul>
+</div>
