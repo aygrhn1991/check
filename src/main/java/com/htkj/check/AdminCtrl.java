@@ -23,8 +23,7 @@ public class AdminCtrl {
 
     @RequestMapping("/startCheck")
     @ResponseBody
-    public String startCheck(){
-        new KafkaConsumer();
+    public String startCheck(){        
         return "";
 //        Properties props = new Properties();
 //        props.put("bootstrap.servers", "192.168.20.214:9092");//Kafka集群
