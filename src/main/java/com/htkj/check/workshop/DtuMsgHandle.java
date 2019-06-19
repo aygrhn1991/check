@@ -5,16 +5,28 @@
  */
 package com.htkj.check.workshop;
 
+import com.htkj.check.ConfigModel;
+import com.htkj.check.DataHandler;
+import com.htkj.check.DataModel;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
- *
  * @author Administrator
  */
 @Component("dtuMsgHandle")
 public class DtuMsgHandle {
 
+    public static boolean on = false;
+    public static ConfigModel config = null;
+    public static List<DataModel> results = null;
+
     public void go(MetaMsg mm) {
-        System.out.println(mm);
+
+        if (on) {
+            DataHandler.h(mm.getData(), config, results);
+        }
+
     }
 }

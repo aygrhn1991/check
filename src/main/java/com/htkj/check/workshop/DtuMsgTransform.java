@@ -70,19 +70,19 @@ public class DtuMsgTransform {
             case G6TransfromFactory.CMD_RT_UP:
                 //实时坐标消息
                 Tuple3<EngineData, Obd, Lnglat> rt = fac_g6.toRealTime(dp);
-
-                if (rt.getC() != null) {
-                    lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, rt.getC()));
-                }
-
-                //发动机消息               
-                if (rt.getA() != null) {
-                    lst.add(new MetaMsg<>(MetaMsg.DOWN_G6_ENG, rt.getA()));
-                }
-                //OBD消息
-                if (rt.getB() != null) {
-                    lst.add(new MetaMsg<>(MetaMsg.DOWN_G6_OBD, rt.getB()));
-                }
+                lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, rt));
+//                if (rt.getC() != null) {
+//                    lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, rt.getC()));
+//                }
+//
+//                //发动机消息
+//                if (rt.getA() != null) {
+//                    lst.add(new MetaMsg<>(MetaMsg.DOWN_G6_ENG, rt.getA()));
+//                }
+//                //OBD消息
+//                if (rt.getB() != null) {
+//                    lst.add(new MetaMsg<>(MetaMsg.DOWN_G6_OBD, rt.getB()));
+//                }
                 break;
         }
         return lst;

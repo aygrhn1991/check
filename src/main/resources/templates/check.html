@@ -8,28 +8,6 @@
             </div>
             <div class="layui-col-xs12">
                 <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in dataList">
-                    <!--                    <div class="layui-row">-->
-                    <!--                        <div class="layui-col-xs6">-->
-                    <!--                            <i ng-if="d.vin!=null&&d.vin!=''" class="layui-icon layui-icon-ok-circle green"></i>-->
-                    <!--                            <i ng-if="d.vin==null||d.vin==''" class="layui-icon layui-icon-close-fill red"></i>-->
-                    <!--                            VIN：{{d.vin}}-->
-                    <!--                        </div>-->
-                    <!--                        <div class="layui-col-xs6">-->
-                    <!--                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>-->
-                    <!--                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>-->
-                    <!--                            定位：{{d.isLocate}}-->
-                    <!--                        </div>-->
-                    <!--                        <div class="layui-col-xs6">-->
-                    <!--                            <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>-->
-                    <!--                            <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>-->
-                    <!--                            时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}-->
-                    <!--                        </div>-->
-                    <!--                        <div class="layui-col-xs6">-->
-                    <!--                            <i ng-if="d.speed==config.speed" class="layui-icon layui-icon-ok-circle green"></i>-->
-                    <!--                            <i ng-if="d.speed!=config.speed" class="layui-icon layui-icon-close-fill red"></i>-->
-                    <!--                            转速：{{d.speed}}-->
-                    <!--                        </div>-->
-                    <!--                    </div>-->
                     <div class="layui-row">
                         <div class="layui-col-xs3">VIN：{{d.vin}}</div>
                         <div class="layui-col-xs2">
@@ -38,9 +16,9 @@
                             <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
                         </div>
                         <div class="layui-col-xs2">
-                            转速：{{d.speed}}
-                            <i ng-if="d.speed==config.speed" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="d.speed!=config.speed" class="layui-icon layui-icon-close-fill red"></i>
+                            转速：
+                            <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
                         </div>
                         <div class="layui-col-xs2">
                             超时：
@@ -48,8 +26,8 @@
                             <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
                         </div>
                         <div class="layui-col-xs3">
-                            <span ng-if="d.isPass" class="layui-badge layui-bg-green">通过</span>
-                            <span ng-if="!d.isPass" class="layui-badge">失败</span>
+                            <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
+                            <span ng-if="!d.result" class="layui-badge">失败</span>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <span>查看数据</span>
                         </div>
@@ -59,6 +37,25 @@
         </div>
     </div>
     <div class="layui-col-xs4">
+        <div class="layui-row">
+            <div class="layui-col-xs10 layui-col-xs-offset2">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>待检VIN（使用逗号分隔）</legend>
+                </fieldset>
+            </div>
+            <div class="layui-col-xs12">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">VIN</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="例：LF000000000000001,LF000000000000002,LF000000000000003"
+                                      class="layui-textarea" ng-model="config.vins" ng-change="vinVerify()"></textarea>
+                            <p ng-if="vinError" style="color:red;">格式错误，请核对</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
         <div class="layui-row">
             <div class="layui-col-xs10 layui-col-xs-offset2">
                 <fieldset class="layui-elem-field layui-field-title">
@@ -76,12 +73,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">超时</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.overtime">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button class="layui-btn" ng-click="saveConfig()">保存</button>
+                            <input type="text" class="layui-input" ng-model="config.overTime">
                         </div>
                     </div>
                 </form>

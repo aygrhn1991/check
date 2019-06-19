@@ -16,33 +16,70 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             alert('请设置对比转速值');
             return;
         }
-        if (isNull($scope.config.overtime)) {
+        if (isNull($scope.config.overTime)) {
             alert('请设置超时时间');
             return;
         }
-        $interval(function () {
-            var thisTime = new Date().getTime();
-            $scope.dataList.push({
-                vin: '001',
-                speed: 3000,
-                isLocate: true,
-                time: thisTime,
-                isOverTime: (new Date( thisTime).getSeconds() -new Date( $scope.lastTime).getSeconds()) > $scope.config.overtime ? true : false,
-                isPass:true,
-            });
-            $scope.lastTime=thisTime;
-        }, 1000);
+        if ($scope.vinError) {
+            alert('VIN格式错误');
+            return;
+        }
+        if (isNull($scope.config.vins)) {
+            alert('请输入待检VIN');
+            return;
+        }
+        var vinListTemp = $scope.config.vins.split(',');
+        console.log(vinListTemp);
+        $scope.vinList = [];
+        vinListTemp.forEach(function (e) {
+            if (!isNull(e.trim())) {
+                $scope.vinList.push(e.trim());
+            }
+        });
+        console.log($scope.vinList);
+        if ($scope.vinList.length == 0) {
+            alert('请输入待检VIN');
+            return;
+        }
+        $http.post(window.context + '/admin/startCheck', {
+            speed: $scope.config.speed,
+            overTime: $scope.config.overTime,
+            vins: $scope.vinList,
+        }).success(function (d) {
+            console.log(d);
+            $scope.timer = $interval(function () {
+                $http.post(window.context + '/admin/onLine').success(function (dd) {
+                    $scope.dataList = [];
+                    $scope.dataList = dd;
+                    console.log(dd[0].datas);
+                })
+            }, 3000);
+        });
     };
-    $scope.saveConfig = function () {
-        alert('已经保存并生效');
-    }
+    $scope.stopCheck = function () {
+        $http.post(window.context + '/admin/stopCheck').success(function (d) {
+            $interval.cancel($scope.timer);
+            console.log(d);
+        })
+    };
+    $scope.vinVerify = function () {
+        console.log($scope.config.vins.indexOf('，'))
+        if ($scope.config.vins.indexOf('，') != -1) {
+            $scope.vinError = true;
+        } else {
+            $scope.vinError = false;
+        }
+    };
     $scope.dataList = [];
     $scope.init = function () {
-        $scope.lastTime = 0;
+        $scope.vinError = false;
+        $scope.vinList = [];
+        $scope.timer = null;
         $scope.dataList = [];
         $scope.config = {
+            vins: 'LBTEST00000001106',
             speed: 3000,
-            overtime: 1,
+            overTime: 1,
         };
     };
     $scope.init();
