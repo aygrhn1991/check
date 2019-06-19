@@ -27,7 +27,8 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
                 speed: 3000,
                 isLocate: true,
                 time: thisTime,
-                isOverTime: (new Date( thisTime).getSeconds() -new Date( $scope.lastTime).getSeconds()) > 1 ? true : false
+                isOverTime: (new Date( thisTime).getSeconds() -new Date( $scope.lastTime).getSeconds()) > $scope.config.overtime ? true : false,
+                isPass:true,
             });
             $scope.lastTime=thisTime;
         }, 1000);
@@ -40,8 +41,8 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.lastTime = 0;
         $scope.dataList = [];
         $scope.config = {
-            speed: null,
-            overtime: null,
+            speed: 3000,
+            overtime: 1,
         };
     };
     $scope.init();

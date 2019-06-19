@@ -8,6 +8,7 @@ public class CheckApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CheckApplication.class, args);
+        new KafkaConsumer();
     }
 
 }

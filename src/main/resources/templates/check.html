@@ -1,18 +1,91 @@
 <h3 class="title">检测</h3>
-<div>
-    <button ng-click="startCheck()">开始检测</button>
-    <div>
-        <h3>配置</h3>
-        转速：<input type="text" ng-model="config.speed"><br>
-        超时：<input type="text" ng-model="config.overtime"><br>
-        <button ng-click="saveConfig()">保存</button>
+<div class="layui-row">
+    <div class="layui-col-xs8">
+        <div class="layui-row">
+            <div class="layui-col-xs12" style="margin-bottom: 10px;">
+                <button class="layui-btn" ng-click="startCheck()">开始检测</button>
+                <button class="layui-btn" ng-click="stopCheck()">停止检测</button>
+            </div>
+            <div class="layui-col-xs12">
+                <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in dataList">
+                    <!--                    <div class="layui-row">-->
+                    <!--                        <div class="layui-col-xs6">-->
+                    <!--                            <i ng-if="d.vin!=null&&d.vin!=''" class="layui-icon layui-icon-ok-circle green"></i>-->
+                    <!--                            <i ng-if="d.vin==null||d.vin==''" class="layui-icon layui-icon-close-fill red"></i>-->
+                    <!--                            VIN：{{d.vin}}-->
+                    <!--                        </div>-->
+                    <!--                        <div class="layui-col-xs6">-->
+                    <!--                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>-->
+                    <!--                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>-->
+                    <!--                            定位：{{d.isLocate}}-->
+                    <!--                        </div>-->
+                    <!--                        <div class="layui-col-xs6">-->
+                    <!--                            <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>-->
+                    <!--                            <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>-->
+                    <!--                            时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}-->
+                    <!--                        </div>-->
+                    <!--                        <div class="layui-col-xs6">-->
+                    <!--                            <i ng-if="d.speed==config.speed" class="layui-icon layui-icon-ok-circle green"></i>-->
+                    <!--                            <i ng-if="d.speed!=config.speed" class="layui-icon layui-icon-close-fill red"></i>-->
+                    <!--                            转速：{{d.speed}}-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+                    <div class="layui-row">
+                        <div class="layui-col-xs3">VIN：{{d.vin}}</div>
+                        <div class="layui-col-xs2">
+                            定位：
+                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
+                        </div>
+                        <div class="layui-col-xs2">
+                            转速：{{d.speed}}
+                            <i ng-if="d.speed==config.speed" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="d.speed!=config.speed" class="layui-icon layui-icon-close-fill red"></i>
+                        </div>
+                        <div class="layui-col-xs2">
+                            超时：
+                            <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
+                        </div>
+                        <div class="layui-col-xs3">
+                            <span ng-if="d.isPass" class="layui-badge layui-bg-green">通过</span>
+                            <span ng-if="!d.isPass" class="layui-badge">失败</span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span>查看数据</span>
+                        </div>
+                    </div>
+                </blockquote>
+            </div>
+        </div>
     </div>
-    <ul>
-        <li ng-repeat="d in dataList">
-            VIN：{{d.vin}}<br>
-            定位：{{d.isLocate}}<span ng-if="!d.isLocate">-----校验失败</span><br>
-            时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}<span ng-if="d.isOverTime">-----校验失败</span><br>
-            转速：{{d.speed}}<span ng-if="d.speed!=config.speed">-----校验失败</span><br>
-        </li>
-    </ul>
+    <div class="layui-col-xs4">
+        <div class="layui-row">
+            <div class="layui-col-xs10 layui-col-xs-offset2">
+                <fieldset class="layui-elem-field layui-field-title">
+                    <legend>配置</legend>
+                </fieldset>
+            </div>
+            <div class="layui-col-xs12">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">转速</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" ng-model="config.speed">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">超时</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" ng-model="config.overtime">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" ng-click="saveConfig()">保存</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
