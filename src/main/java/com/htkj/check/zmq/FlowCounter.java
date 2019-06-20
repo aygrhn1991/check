@@ -26,7 +26,7 @@ public class FlowCounter {
     public AtomicInteger zmqTimes = new AtomicInteger();
     
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 5000)
     public void doLog() {
         Logger.getLogger(FlowCounter.class.getName()).log(Level.INFO, "**************************************************************************");
         Logger.getLogger(FlowCounter.class.getName()).log(Level.INFO, "接收zmq数据条数[{0}]", this.zmq.get());

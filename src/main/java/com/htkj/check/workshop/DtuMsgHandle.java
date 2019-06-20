@@ -8,6 +8,7 @@ package com.htkj.check.workshop;
 import com.htkj.check.ConfigModel;
 import com.htkj.check.DataHandler;
 import com.htkj.check.DataModel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,14 +19,16 @@ import java.util.List;
 @Component("dtuMsgHandle")
 public class DtuMsgHandle {
 
+    @Autowired
+    ConfigModel configModel;
+
     public static boolean on = false;
-    public static ConfigModel config = null;
     public static List<DataModel> results = null;
 
     public void go(MetaMsg mm) {
 
-        if (on) {
-            DataHandler.h(mm.getData(), config, results);
+        if (on && mm.order == MetaMsg.DOWN_LNGLAT) {
+            DataHandler.h(mm.getData(), configModel, results);
         }
 
     }

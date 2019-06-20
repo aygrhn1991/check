@@ -49,9 +49,12 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             console.log(d);
             $scope.timer = $interval(function () {
                 $http.post(window.context + '/admin/onLine').success(function (dd) {
+                    dd.forEach(function (ee) {
+                        ee.count = ee.datas.length;
+                    })
                     $scope.dataList = [];
                     $scope.dataList = dd;
-                    console.log(dd[0].datas);
+                    console.log(dd);
                 })
             }, 3000);
         });
@@ -61,6 +64,21 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $interval.cancel($scope.timer);
             console.log(d);
         })
+    };
+    $scope.showList = function (e) {
+        $scope.subDataList = [];
+        $scope.subDataList = e.datas;
+        layer.open({
+            type: 1,
+            shade: 0,
+            area: '800px',
+            maxHeight: '400px',
+            btn: ['关闭'],
+            content: $('#listModal'),
+            yes: function (index, layero) {
+                layer.close(index);
+            }
+        });
     };
     $scope.vinVerify = function () {
         console.log($scope.config.vins.indexOf('，'))
@@ -76,10 +94,14 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.vinList = [];
         $scope.timer = null;
         $scope.dataList = [];
+        $scope.subDataList = [];
         $scope.config = {
-            vins: 'LBTEST00000001106',
+            vins: 'LBTEST00000001106,\n' +
+                'LBTEST00000001107,\n' +
+                'LBTEST00000001108,\n' +
+                'LBTEST00000001109,',
             speed: 3000,
-            overTime: 1,
+            overTime: 10,
         };
     };
     $scope.init();

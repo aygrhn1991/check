@@ -7,6 +7,7 @@ public class DataModel {
 
     public boolean isLocate;
     public boolean isSpeed;
+    public boolean isInterval;
     public boolean isOverTime;
 
     public boolean result;

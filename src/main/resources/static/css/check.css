@@ -25,3 +25,8 @@ select {
 .red {
     color: red;
 }
+
+.modal-scroll {
+    height: 400px;
+    overflow-y: scroll;
+}
