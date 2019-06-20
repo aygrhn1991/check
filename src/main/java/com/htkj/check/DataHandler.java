@@ -3,7 +3,6 @@ package com.htkj.check;
 import org.ht.iov.service.core.g6.EngineData;
 import org.ht.iov.service.core.g6.ObdData;
 import org.ht.utils.core.Tuple3;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Collections;
 import java.util.Date;
@@ -38,6 +37,7 @@ public class DataHandler {
                 dataSubModel.lat = lat;
                 dataSubModel.speed = speed;
                 result.datas.add(dataSubModel);
+                //排序（不排序了，浪费资源，耗时）
                 Collections.sort(result.datas, new DataSubModelComparator());
                 //检查发动机转速
                 result.isSpeed = speed == configModel.speed;

@@ -19,9 +19,6 @@ public class AdminCtrl {
 
     private List<DataModel> ldm = null;
 
-    @Autowired
-    ConfigModel configModel;
-
     @RequestMapping("/index")
     public String index() {
         return "/index";
@@ -35,8 +32,7 @@ public class AdminCtrl {
 
     @RequestMapping("/startCheck")
     @ResponseBody
-    public boolean startCheck(@RequestBody ConfigModel cm) {
-        configModel=cm;
+    public boolean startCheck(@RequestBody ConfigModel configModel) {
         ldm = new ArrayList<>();
         for (String vin : configModel.vins) {
             DataModel dataModel = new DataModel();
@@ -46,6 +42,7 @@ public class AdminCtrl {
             ldm.add(dataModel);
         }
         DtuMsgHandle.results = ldm;
+        DtuMsgHandle.config = configModel;
         DtuMsgHandle.on = true;
         return true;
     }
@@ -64,19 +61,19 @@ public class AdminCtrl {
     }
 
 
-    @Scheduled(fixedDelay = 5000)
-    public void checkOverTime() {
-        System.out.println("执行计算1");
-        if(DtuMsgHandle.on){
-            System.out.println("执行计算2");
-            for (int i = 0; i < ldm.size(); i++) {
-                DataModel result = ldm.get(i);
-                if (result.datas.size() <= 1) {
-                    result.isOverTime = true;
-                } else {
-                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= configModel.overTime;
-                }
-            }
-        }
-    }
+//    @Scheduled(fixedDelay = 5000)
+//    public void checkOverTime() {
+//        System.out.println("执行计算1");
+//        if(DtuMsgHandle.on){
+//            System.out.println("执行计算2");
+//            for (int i = 0; i < ldm.size(); i++) {
+//                DataModel result = ldm.get(i);
+//                if (result.datas.size() <= 1) {
+//                    result.isOverTime = true;
+//                } else {
+//                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= 30;
+//                }
+//            }
+//        }
+//    }
 }
