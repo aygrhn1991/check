@@ -64,17 +64,19 @@ public class AdminCtrl {
     }
 
 
-//    @Scheduled(fixedDelay = 10000)
-//    public void checkOverTime() {
-//        if(DtuMsgHandle.on){
-//            for (int i = 0; i < ldm.size(); i++) {
-//                DataModel result = ldm.get(i);
-//                if (result.datas.size() <= 1) {
-//                    result.isOverTime = true;
-//                } else {
-//                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= configModel.overTime;
-//                }
-//            }
-//        }
-//    }
+    @Scheduled(fixedDelay = 5000)
+    public void checkOverTime() {
+        System.out.println("执行计算1");
+        if(DtuMsgHandle.on){
+            System.out.println("执行计算2");
+            for (int i = 0; i < ldm.size(); i++) {
+                DataModel result = ldm.get(i);
+                if (result.datas.size() <= 1) {
+                    result.isOverTime = true;
+                } else {
+                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= configModel.overTime;
+                }
+            }
+        }
+    }
 }
