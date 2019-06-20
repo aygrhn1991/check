@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.zeromq.ZMQ;
 import org.zeromq.ZMQ.Socket;
@@ -39,7 +40,7 @@ public class ZmsConsumerContainer {
     public void initialize() {
         this.initThreadPool();
         this.initializeConsumers();
-        this.go();
+//        this.go();
     }
 
     public void destroy() {
@@ -49,7 +50,7 @@ public class ZmsConsumerContainer {
     }
 
     // 作废本函数
-//    @Scheduled(fixedDelay = 1000)
+    @Scheduled(fixedDelay = 1000)
     public void doReceiveMsg() {
         for (ZmsConsumer c : this.consumers) {
             c.receiveStr();

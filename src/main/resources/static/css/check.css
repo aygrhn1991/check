@@ -30,3 +30,8 @@ select {
     height: 400px;
     overflow-y: scroll;
 }
+
+.space {
+    display: inline-block;
+    width: 20px;
+}

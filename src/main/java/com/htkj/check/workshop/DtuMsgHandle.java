@@ -23,11 +23,10 @@ public class DtuMsgHandle {
     public static List<DataModel> results = null;
 
     public void go(MetaMsg mm) {
-        Long l = System.currentTimeMillis();
+
         if (on && mm.order == MetaMsg.DOWN_LNGLAT) {
             DataHandler.h(mm.getData(), config, results);
         }
-        l = System.currentTimeMillis() - l;
-        System.out.println(l);
+
     }
 }

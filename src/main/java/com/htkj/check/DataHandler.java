@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DataHandler {
 
-    public static void h(Object obj,ConfigModel configModel, List<DataModel> results) {
+    public static void h(Object obj, ConfigModel configModel, List<DataModel> results) {
         Tuple3 t3 = (Tuple3) obj;
         EngineData eng = (EngineData) (t3.a);
         ObdData obd = (ObdData) (t3.b);
@@ -20,7 +20,7 @@ public class DataHandler {
         long time = eng.getAttm().getTime();
         double lng = eng.getLongitude();
         double lat = eng.getLatitude();
-
+        Long l1 = System.currentTimeMillis();
         for (int i = 0; i < results.size(); i++) {
             DataModel result = results.get(i);
             //检查超时
@@ -53,5 +53,7 @@ public class DataHandler {
                 result.result = result.isSpeed && result.isLocate && result.isInterval && result.isOverTime;
             }
         }
+        long l2 = System.currentTimeMillis();
+        System.out.println("计算耗时：" + (l2 - l1) + ",开始：" + l1 + ",结束：" + l2);
     }
 }

@@ -29,24 +29,27 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             return;
         }
         var vinListTemp = $scope.config.vins.split(',');
-        console.log(vinListTemp);
         $scope.vinList = [];
         vinListTemp.forEach(function (e) {
             if (!isNull(e.trim())) {
                 $scope.vinList.push(e.trim());
             }
         });
-        console.log($scope.vinList);
         if ($scope.vinList.length == 0) {
             alert('请输入待检VIN');
             return;
         }
+        layer.msg('启动中！', {time: 1000});
         $http.post(window.context + '/admin/startCheck', {
             speed: $scope.config.speed,
             overTime: $scope.config.overTime,
             vins: $scope.vinList,
         }).success(function (d) {
-            console.log(d);
+            console.log('开始检测：' + dateToYYMMDDHHMMSS(new Date($scope.timeStart)));
+            $scope.isStart = true;
+            $scope.timeStart = new Date().getTime();
+            $scope.timeEnd = null;
+            $scope.timeSeconds = null;
             $scope.timer = $interval(function () {
                 $http.post(window.context + '/admin/onLine').success(function (dd) {
                     dd.forEach(function (ee) {
@@ -60,9 +63,13 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         });
     };
     $scope.stopCheck = function () {
+        layer.msg('停止中！', {time: 1000});
         $http.post(window.context + '/admin/stopCheck').success(function (d) {
+            console.log('停止检测：' + dateToYYMMDDHHMMSS(new Date($scope.timeEnd)));
+            $scope.isStart = false;
+            $scope.timeEnd = new Date().getTime();
+            $scope.timeSeconds = Math.floor(($scope.timeEnd - $scope.timeStart) / 1000) + 's';
             $interval.cancel($scope.timer);
-            console.log(d);
         })
     };
     $scope.showList = function (e) {
@@ -70,9 +77,9 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.subDataList = e.datas;
         layer.open({
             type: 1,
+            title: e.vin + '(' + e.datas.length + '条)',
             shade: 0,
             area: '800px',
-            maxHeight: '400px',
             btn: ['关闭'],
             content: $('#listModal'),
             yes: function (index, layero) {
@@ -81,7 +88,6 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         });
     };
     $scope.vinVerify = function () {
-        console.log($scope.config.vins.indexOf('，'))
         if ($scope.config.vins.indexOf('，') != -1) {
             $scope.vinError = true;
         } else {
@@ -90,6 +96,10 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
     };
     $scope.dataList = [];
     $scope.init = function () {
+        $scope.timeStart = null;
+        $scope.timeEnd = null;
+        $scope.timeSeconds = null;
+        $scope.isStart = false;
         $scope.vinError = false;
         $scope.vinList = [];
         $scope.timer = null;

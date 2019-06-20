@@ -3,8 +3,20 @@
     <div class="layui-col-xs8">
         <div class="layui-row">
             <div class="layui-col-xs12" style="margin-bottom: 10px;">
-                <button class="layui-btn" ng-click="startCheck()">开始检测</button>
-                <button class="layui-btn" ng-click="stopCheck()">停止检测</button>
+                <button class="layui-btn" ng-class="{'layui-btn-disabled':isStart}" ng-disabled="isStart"
+                        ng-click="startCheck()">开始检测
+                </button>
+                <button class="layui-btn" ng-class="{'layui-btn-disabled':!isStart}" ng-disabled="!isStart"
+                        ng-click="stopCheck()">停止检测
+                </button>
+                <span class="space"></span>
+                <span>
+                    开始时间：{{timeStart|date:'yyyy-MM-dd HH:mm:ss'}}
+                    <span class="space"></span>
+                    结束时间：{{timeEnd|date:'yyyy-MM-dd HH:mm:ss'}}
+                    <span class="space"></span>
+                    计时：{{timeSeconds}}
+                </span>
             </div>
             <div class="layui-col-xs12">
                 <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in dataList">
@@ -13,18 +25,18 @@
                             VIN：{{d.vin}}
                         </div>
                         <div class="layui-col-xs6">
-                            定位：
-                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            转速：
-                            <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             间隔：
                             <i ng-if="d.isInterval" class="layui-icon layui-icon-ok-circle green"></i>
                             <i ng-if="!d.isInterval" class="layui-icon layui-icon-close-fill red"></i>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="space"></span>
+                            转速：
+                            <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
+                            <span class="space"></span>
+                            定位：
+                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
+                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
+                            <span class="space"></span>
                             超时：
                             <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>
                             <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
@@ -32,7 +44,7 @@
                         <div class="layui-col-xs3">
                             <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
                             <span ng-if="!d.result" class="layui-badge">失败</span>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span class="space"></span>
                             <span style="cursor: pointer;" ng-click="showList(d)">查看数据({{d.count}}条)</span>
                         </div>
                     </div>
@@ -44,7 +56,7 @@
         <div class="layui-row">
             <div class="layui-col-xs10 layui-col-xs-offset2">
                 <fieldset class="layui-elem-field layui-field-title">
-                    <legend>待检VIN（使用逗号分隔）</legend>
+                    <legend>待检VIN（使用逗号,分隔）</legend>
                 </fieldset>
             </div>
             <div class="layui-col-xs12">
@@ -95,11 +107,15 @@
                         <div class="layui-col-xs4">
                             时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
-                        <div class="layui-col-xs5">
-                            经纬度：{{d.lng}}&nbsp;,&nbsp;{{d.lat}}
-                        </div>
                         <div class="layui-col-xs3">
                             转速：{{d.speed}}
+                        </div>
+                        <div class="layui-col-xs4">
+                            经纬度：{{d.lng+' , '+d.lat}}
+                        </div>
+                        <div class="layui-col-xs1">
+                            <span ng-if="d.lng!=0&&d.lat!=0">已定位</span>
+                            <span ng-if="d.lng==0||d.lat==0">未定位</span>
                         </div>
                     </div>
                 </blockquote>
