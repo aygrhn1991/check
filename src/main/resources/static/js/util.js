@@ -9,6 +9,10 @@ window.dateToYYMMDDHHMMSS = function (date) {
 window.getRandomNum = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
-window.isNull=function (obj) {
+window.isNull = function (obj) {
     return (obj === undefined || obj === null || obj === '') ? true : false;
 };
+window.isNumber = function (obj) {
+    var reg = /^[0-9]*$/;
+    return reg.test(obj);
+}

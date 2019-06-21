@@ -13,11 +13,19 @@ app.config(function ($routeProvider) {
 app.controller('checkCtl', function ($scope, $http, $interval) {
     $scope.startCheck = function () {
         if (isNull($scope.config.speed)) {
-            alert('请设置对比转速值');
+            alert('请设置转速值');
             return;
         }
         if (isNull($scope.config.overTime)) {
             alert('请设置超时时间');
+            return;
+        }
+        if(!isNumber($scope.config.speed)){
+            alert('转速格式错误');
+            return;
+        }
+        if(!isNumber($scope.config.overTime)){
+            alert('超时时间格式错误');
             return;
         }
         if ($scope.vinError) {
@@ -25,7 +33,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             return;
         }
         if (isNull($scope.config.vins)) {
-            alert('请输入待检VIN');
+            alert('请输入待检VIN(1)');
             return;
         }
         var vinListTemp = $scope.config.vins.split(',');
@@ -36,7 +44,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             }
         });
         if ($scope.vinList.length == 0) {
-            alert('请输入待检VIN');
+            alert('请输入待检VIN(2)');
             return;
         }
         layer.msg('启动中！', {time: 1000});
