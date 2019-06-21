@@ -23,12 +23,12 @@ public class AdminCtrl {
 
     @RequestMapping("/index")
     public String index() {
-        return "/index";
+        return "index";
     }
 
     @RequestMapping("/check")
     public String check() {
-        return "/check";
+        return "check";
     }
 
 

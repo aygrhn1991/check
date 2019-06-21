@@ -20,7 +20,7 @@ public class AuthCtrl {
 
     @RequestMapping("/login")
     public String login() {
-        return "/login";
+        return "login";
     }
 
 
@@ -41,6 +41,6 @@ public class AuthCtrl {
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("auth");
-        return "redirect:/auth/login";
+        return "redirect:auth/login";
     }
 }
