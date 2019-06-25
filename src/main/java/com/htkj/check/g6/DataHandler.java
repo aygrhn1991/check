@@ -1,4 +1,4 @@
-package com.htkj.check;
+package com.htkj.check.g6;
 
 import org.ht.iov.service.core.g6.EngineData;
 import org.ht.iov.service.core.g6.ObdData;

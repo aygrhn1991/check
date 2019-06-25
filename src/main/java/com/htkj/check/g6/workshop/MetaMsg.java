@@ -1,4 +1,4 @@
-package com.htkj.check.workshop;
+package com.htkj.check.g6.workshop;
 
 /**
  * 元消息

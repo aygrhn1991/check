@@ -1,4 +1,4 @@
-package com.htkj.check.zmq;
+package com.htkj.check.g6.zmq;
 
 import java.util.Date;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;

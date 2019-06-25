@@ -1,7 +1,6 @@
-package com.htkj.check;
+package com.htkj.check.g6;
 
-import com.htkj.check.workshop.DtuMsgHandle;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.htkj.check.g6.workshop.DtuMsgHandle;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,8 +13,8 @@ import java.util.List;
 
 
 @Controller
-@RequestMapping("/admin")
-public class AdminCtrl {
+@RequestMapping("/g6")
+public class G6Ctrl {
 
     private ConfigModel configModel;
 
@@ -23,12 +22,12 @@ public class AdminCtrl {
 
     @RequestMapping("/index")
     public String index() {
-        return "index";
+        return "g6/index";
     }
 
     @RequestMapping("/check")
     public String check() {
-        return "check";
+        return "g6/check";
     }
 
 

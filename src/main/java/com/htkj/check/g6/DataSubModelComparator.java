@@ -1,4 +1,4 @@
-package com.htkj.check;
+package com.htkj.check.g6;
 
 import java.util.Comparator;
 

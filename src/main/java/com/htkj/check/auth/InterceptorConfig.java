@@ -1,4 +1,4 @@
-package com.htkj.check;
+package com.htkj.check.auth;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -9,6 +9,6 @@ public class InterceptorConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/admin/**");
+        registry.addInterceptor(new AuthInterceptor()).addPathPatterns("/g6/**").addPathPatterns("/jly/**");
     }
 }

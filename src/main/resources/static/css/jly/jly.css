@@ -1,0 +1,37 @@
+.modal-box {
+    width: 0px;
+    height: 0px;
+    overflow: hidden;
+}
+
+.modal {
+    padding: 20px;
+}
+
+.title {
+    border-bottom: 1px solid #e6e6e6;
+    margin-bottom: 30px;
+    line-height: 40px;
+}
+
+select {
+    width: 100%;
+}
+
+.green {
+    color: green;
+}
+
+.red {
+    color: red;
+}
+
+.modal-scroll {
+    height: 400px;
+    overflow-y: scroll;
+}
+
+.space {
+    display: inline-block;
+    width: 20px;
+}

@@ -1,4 +1,4 @@
-package com.htkj.check;
+package com.htkj.check.auth;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

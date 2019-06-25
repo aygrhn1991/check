@@ -3,7 +3,7 @@ var app = angular.module('app', ['ngRoute']);
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/check', {
-            templateUrl: context + '/admin/check',
+            templateUrl: context + '/g6/check',
             controller: 'checkCtl'
         })
         .otherwise({
@@ -48,7 +48,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             return;
         }
         layer.msg('启动中！', {time: 1000});
-        $http.post(window.context + '/admin/startCheck', {
+        $http.post(window.context + '/g6/startCheck', {
             speed: $scope.config.speed,
             overTime: $scope.config.overTime,
             vins: $scope.vinList,
@@ -59,7 +59,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $scope.timeEnd = null;
             $scope.timeSeconds = null;
             $scope.timer = $interval(function () {
-                $http.post(window.context + '/admin/onLine').success(function (dd) {
+                $http.post(window.context + '/g6/onLine').success(function (dd) {
                     dd.forEach(function (ee) {
                         ee.count = ee.datas.length;
                     })
@@ -72,7 +72,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
     };
     $scope.stopCheck = function () {
         layer.msg('停止中！', {time: 1000});
-        $http.post(window.context + '/admin/stopCheck').success(function (d) {
+        $http.post(window.context + '/g6/stopCheck').success(function (d) {
             console.log('停止检测：' + dateToYYMMDDHHMMSS(new Date($scope.timeEnd)));
             $scope.isStart = false;
             $scope.timeEnd = new Date().getTime();
@@ -124,29 +124,4 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         };
     };
     $scope.init();
-});
-app.controller('loginCtrl', function ($scope, $http) {
-    $scope.authModel = {
-        account: null,
-        password: null
-    }
-    $scope.auth = function () {
-        if ($scope.authModel.account === null ||
-            $scope.authModel.account === '' ||
-            $scope.authModel.password === null ||
-            $scope.authModel.password === '') {
-            alert('请填写账号密码');
-            return;
-        }
-        $http.post(context + '/auth/auth?account=' + $scope.authModel.account + '&password=' + $scope.authModel.password).success(function (d) {
-            if (d) {
-                window.location.href = context + '/admin/index';
-            } else {
-                alert('登陆失败');
-            }
-        })
-    };
-    $scope.authModel.account = 'admin';
-    $scope.authModel.password = 'admin';
-    $scope.auth();
 });

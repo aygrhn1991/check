@@ -1,6 +1,6 @@
-package com.htkj.check.workshop;
+package com.htkj.check.g6.workshop;
 
-import com.htkj.check.zmq.FlowCounter;
+import com.htkj.check.g6.zmq.FlowCounter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;

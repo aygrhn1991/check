@@ -1,4 +1,4 @@
-package com.htkj.check;
+package com.htkj.check.auth;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 

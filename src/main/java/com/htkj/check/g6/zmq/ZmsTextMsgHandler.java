@@ -1,4 +1,4 @@
-package com.htkj.check.zmq;
+package com.htkj.check.g6.zmq;
 
 /**
  *

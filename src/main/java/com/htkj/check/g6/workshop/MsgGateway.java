@@ -1,4 +1,4 @@
-package com.htkj.check.workshop;
+package com.htkj.check.g6.workshop;
 
 import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.MessagingGateway;
