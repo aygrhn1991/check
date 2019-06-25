@@ -6,6 +6,16 @@ window.dateToYYMMDDHHMMSS = function (date) {
     var s = (date.getSeconds() >= 10 ? '' : '0') + date.getSeconds();
     return date.getFullYear() + '/' + M + '/' + d + ' ' + h + ':' + m + ':' + s;
 };
+window.dateToYYMMDD = function (date) {
+    var M = ((date.getMonth() + 1) >= 10 ? '' : '0') + (date.getMonth() + 1);
+    var d = (date.getDate() >= 10 ? '' : '0') + date.getDate();
+    return date.getFullYear() + '/' + M + '/' + d;
+};
+window.dateToYYMMDD_ = function (date) {
+    var M = ((date.getMonth() + 1) >= 10 ? '' : '0') + (date.getMonth() + 1);
+    var d = (date.getDate() >= 10 ? '' : '0') + date.getDate();
+    return date.getFullYear() + '-' + M + '-' + d;
+};
 window.getRandomNum = function (min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 };
@@ -16,7 +26,7 @@ window.isNumber = function (obj) {
     var reg = /^[0-9]*$/;
     return reg.test(obj);
 };
-window.parameterTransfer=function(value) {
+window.parameterTransfer = function (value) {
     if (isNull(value)) {
         return -1;
     } else {

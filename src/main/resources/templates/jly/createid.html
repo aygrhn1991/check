@@ -1,1 +1,65 @@
-createid
+<h3 class="title">生成ID</h3>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">日期</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="date" ng-model="pageModel.date">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">终端类型</label>
+        <div class="layui-input-inline">
+            <select class="layui-select" ng-options="p.id as p.name for p in onlineDeviceList"
+                    ng-model="pageModel.dtuNo"></select>
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">小型号</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">3C代码</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">起始编号</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">生成数量</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+        </div>
+        <button class="layui-btn" ng-click="getOnlineDevices()">
+            <i class="layui-icon layui-icon-refresh"></i>
+            刷新在线车辆
+        </button>
+        <button class="layui-btn" ng-click="takePicture()">
+            <i class="layui-icon layui-icon-camera"></i>
+            拍照
+        </button>
+        <button class="layui-btn" ng-click="stop()">停止</button>
+    </div>
+</div>
+<table class="layui-table">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>时间</th>
+        <th>数据</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="l in list">
+        <td>{{$index+1}}</td>
+        <td>{{l.aaa}}</td>
+        <td>{{l.bbb}}</td>
+    </tr>
+    </tbody>
+</table>
