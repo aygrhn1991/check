@@ -1,1 +1,54 @@
-auth
+<h3 class="title">解除鉴权</h3>
+<div class="layui-form-item">
+    <div class="layui-inline">
+        <label class="layui-form-label">车牌号码</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="searchModel.vehno">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">终端编号</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="searchModel.dtuno">
+        </div>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label">SIM卡号</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" ng-model="searchModel.simno">
+        </div>
+        <button class="layui-btn" ng-click="loadData()">搜索</button>
+        <button class="layui-btn" ng-click="init()">重置</button>
+    </div>
+</div>
+<table class="layui-table">
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>车牌号码</th>
+        <th>车牌颜色</th>
+        <th>终端编号</th>
+        <th>记录仪型号</th>
+        <th>SIM卡号</th>
+        <th>状态</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="l in list">
+        <td>{{$index+1}}</td>
+        <td>{{l.aaa}}</td>
+        <td>{{l.bbb}}</td>
+        <td>{{l.ccc}}</td>
+        <td>{{l.aaa}}</td>
+        <td>{{l.aaa}}</td>
+        <td>
+            <span ng-if="l.aaa" class="layui-badge layui-bg-green">已绑定</span>
+            <span ng-if="!l.aaa" class="layui-badge">未绑定</span>
+        </td>
+        <td>
+            <button class="layui-btn layui-btn-danger layui-btn-sm" ng-click="unBind(l)">解除鉴权</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

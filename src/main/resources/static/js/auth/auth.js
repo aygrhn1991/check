@@ -23,5 +23,5 @@ app.controller('loginCtrl', function ($scope, $http) {
     };
     $scope.authModel.account = 'admin';
     $scope.authModel.password = 'admin';
-    //$scope.auth();
+    $scope.auth();
 });

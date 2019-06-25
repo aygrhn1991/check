@@ -15,4 +15,11 @@ window.isNull = function (obj) {
 window.isNumber = function (obj) {
     var reg = /^[0-9]*$/;
     return reg.test(obj);
-}
+};
+window.parameterTransfer=function(value) {
+    if (isNull(value)) {
+        return -1;
+    } else {
+        return value;
+    }
+};
