@@ -3,21 +3,21 @@
     <div class="layui-inline">
         <label class="layui-form-label">车牌号码</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="searchModel.vehno">
+            <input type="text" class="layui-input" ng-model="searchModel.vehNo">
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">终端编号</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="searchModel.dtuno">
+            <input type="text" class="layui-input" ng-model="searchModel.dtuNo">
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">SIM卡号</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="searchModel.simno">
+            <input type="text" class="layui-input" ng-model="searchModel.simNo">
         </div>
-        <button class="layui-btn" ng-click="loadData()">搜索</button>
+        <button class="layui-btn" ng-click="loadData(true)">搜索</button>
         <button class="layui-btn" ng-click="init()">重置</button>
     </div>
 </div>
@@ -52,3 +52,4 @@
     </tr>
     </tbody>
 </table>
+<div id="page"></div>

@@ -67,7 +67,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
                     $scope.dataList = dd;
                     console.log(dd);
                 })
-            }, 3000);
+            }, 2000);
         });
     };
     $scope.stopCheck = function () {
