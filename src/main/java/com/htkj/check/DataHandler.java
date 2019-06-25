@@ -38,7 +38,7 @@ public class DataHandler {
                 dataSubModel.speed = speed;
                 result.datas.add(dataSubModel);
                 //排序（不排序了，浪费资源，耗时）
-                //Collections.sort(result.datas, new DataSubModelComparator());
+                Collections.sort(result.datas, new DataSubModelComparator());
                 //检查发动机转速
                 result.isSpeed = speed == configModel.speed;
                 //检查定位

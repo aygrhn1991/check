@@ -114,12 +114,13 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.dataList = [];
         $scope.subDataList = [];
         $scope.config = {
-            vins: 'LBTEST00000001106,\n' +
-                'LBTEST00000001107,\n' +
-                'LBTEST00000001108,\n' +
-                'LBTEST00000001109,',
-            speed: 3000,
-            overTime: 10,
+            // vins: 'LBTEST00000001106,\n' +
+            //     'LBTEST00000001107,\n' +
+            //     'LBTEST00000001108,\n' +
+            //     'LBTEST00000001109,',
+            vins: null,
+            speed: null,
+            overTime: null,
         };
     };
     $scope.init();
