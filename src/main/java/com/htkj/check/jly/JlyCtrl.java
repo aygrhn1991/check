@@ -78,7 +78,7 @@ public class JlyCtrl {
 
     @RequestMapping("/getPictureData/{dtuNo}")
     @ResponseBody
-    public List<Map<String, String>> getPictureData(@PathVariable("dtuNo") String dtuNo) {
+    public DataModel getPictureData(@PathVariable("dtuNo") String dtuNo) {
         List<Map<String, String>> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Map map = new HashMap();
@@ -87,7 +87,49 @@ public class JlyCtrl {
             map.put("ccc", "ccc" + i);
             list.add(map);
         }
-        return list;
+        return new DataModel(list.size(), list);
     }
 
+    @RequestMapping("/getDeviceType")
+    @ResponseBody
+    public DataModel getDeviceType() {
+        List<Map<String, String>> list = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            Map map = new HashMap();
+            map.put("id", i);
+            map.put("type", "type" + i);
+            list.add(map);
+        }
+        return new DataModel(list.size(), list);
+    }
+
+    @RequestMapping("/getPositon")
+    @ResponseBody
+    public int getPositon() {
+        return 10086;
+    }
+
+    @RequestMapping("/createIds/{date}/{type}/{subType}/{c3}/{positon}/{count}")
+    @ResponseBody
+    public DataModel createIds(@PathVariable("date") long date,
+                               @PathVariable("type") String type,
+                               @PathVariable("subType") String subType,
+                               @PathVariable("c3") String c3,
+                               @PathVariable("positon") int positon,
+                               @PathVariable("count") int count) {
+        List<Map<String, String>> list = new ArrayList<>();
+        for (int i = positon + 1; i < positon + 1 + count; i++) {
+            Map map = new HashMap();
+            map.put("id", i);
+            map.put("name", "name" + i);
+            list.add(map);
+        }
+        return new DataModel(list.size(), list);
+    }
+
+    @RequestMapping("/exportIds")
+    @ResponseBody
+    public int exportIds() {
+        return 10086;
+    }
 }

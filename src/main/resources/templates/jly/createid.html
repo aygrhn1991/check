@@ -9,42 +9,38 @@
     <div class="layui-inline">
         <label class="layui-form-label">终端类型</label>
         <div class="layui-input-inline">
-            <select class="layui-select" ng-options="p.id as p.name for p in onlineDeviceList"
-                    ng-model="pageModel.dtuNo"></select>
+            <select class="layui-select" ng-options="p.id as p.type for p in deviceTypeList"
+                    ng-model="pageModel.type"></select>
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">小型号</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+            <input type="text" class="layui-input" ng-model="pageModel.subType">
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">3C代码</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+            <input type="text" class="layui-input" ng-model="pageModel.c3">
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">起始编号</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+            <input type="text" class="layui-input" ng-model="pageModel.positon">
         </div>
     </div>
     <div class="layui-inline">
         <label class="layui-form-label">生成数量</label>
         <div class="layui-input-inline">
-            <input type="text" class="layui-input" ng-model="pageModel.vehNo">
+            <input type="text" class="layui-input" ng-model="pageModel.count">
         </div>
-        <button class="layui-btn" ng-click="getOnlineDevices()">
-            <i class="layui-icon layui-icon-refresh"></i>
-            刷新在线车辆
-        </button>
-        <button class="layui-btn" ng-click="takePicture()">
-            <i class="layui-icon layui-icon-camera"></i>
-            拍照
-        </button>
-        <button class="layui-btn" ng-click="stop()">停止</button>
+    </div>
+    <div class="layui-inline">
+        <label class="layui-form-label"></label>
+        <button class="layui-btn" ng-click="createIds()">生成</button>
+        <button class="layui-btn" ng-click="exportIds()">导出</button>
     </div>
 </div>
 <table class="layui-table">
@@ -58,8 +54,8 @@
     <tbody>
     <tr ng-repeat="l in list">
         <td>{{$index+1}}</td>
-        <td>{{l.aaa}}</td>
-        <td>{{l.bbb}}</td>
+        <td>{{l.id}}</td>
+        <td>{{l.name}}</td>
     </tr>
     </tbody>
 </table>
