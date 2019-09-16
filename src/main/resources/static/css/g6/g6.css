@@ -35,3 +35,45 @@ select {
     display: inline-block;
     width: 20px;
 }
+
+/*以下为临时代码*/
+/**{*/
+/*    color: #fff !important;*/
+/*}*/
+/*input,textarea{*/
+/*    background-color: #00042C !important;*/
+/*}*/
+/*.layui-logo {*/
+/*    width: initial !important;*/
+/*}*/
+
+/*.layui-logo img {*/
+
+/*}*/
+
+/*.layui-logo span {*/
+/*    display: inline-block;*/
+/*    font-weight: bold;*/
+/*    color: white;*/
+/*    font-size: 20px;*/
+/*    margin-left: 20px;*/
+/*}*/
+
+/*.layui-layout-admin .layui-header,*/
+/*.layui-side-scroll{*/
+/*    background-color: #020419;*/
+/*}*/
+/*.layui-nav-tree .layui-nav-item a,*/
+/*.layui-nav-tree .layui-nav-item a:hover {*/
+/*    background: linear-gradient(rgba(0,85,147,1),rgba(0,86,147,0));*/
+/*}*/
+/*.layui-layout-admin .layui-body{*/
+/*    background-color: #00042C;*/
+/*    border-top:1px solid #002bad;*/
+/*    bottom:0;*/
+/*}*/
+/*.layui-btn,*/
+/*.layui-btn-disabled, .layui-btn-disabled:active, .layui-btn-disabled:hover{*/
+/*    background: linear-gradient(rgba(0,85,147,1),rgba(0,86,147,0)) !important;*/
+/*    border:1px solid #5d5d5d !important;*/
+/*}*/
