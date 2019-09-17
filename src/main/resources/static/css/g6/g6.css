@@ -28,12 +28,19 @@ select {
 
 .modal-scroll {
     height: 400px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 .space {
     display: inline-block;
     width: 20px;
+}
+
+input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    vertical-align: top;
+    cursor: pointer;
 }
 
 /*以下为临时代码*/

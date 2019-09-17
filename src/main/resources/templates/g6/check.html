@@ -2,6 +2,17 @@
 <div class="layui-row">
     <div class="layui-col-xs8">
         <div class="layui-row">
+            <div class="layui-col-xs12">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">车辆型号</label>
+                    <div class="layui-input-block" style="padding-top: 9px;">
+                        <div class="space"></div>
+                        <input type="radio" name="dtuType" value="0" ng-model="dtuType">&nbsp;J6
+                        <div class="space"></div>
+                        <input type="radio" name="dtuType" value="1" ng-model="dtuType">&nbsp;J7
+                    </div>
+                </div>
+            </div>
             <div class="layui-col-xs12" style="margin-bottom: 10px;">
                 <button class="layui-btn" ng-class="{'layui-btn-disabled':isStart}" ng-disabled="isStart"
                         ng-click="startCheck()">开始检测
@@ -18,28 +29,39 @@
                     计时：{{timeSeconds}}
                 </span>
             </div>
+            <div class="layui-col-xs12" style="margin-bottom: 10px;" ng-if="isStart">
+                数据刷新时间：{{timeRefresh|date:'yyyy-MM-dd HH:mm:ss'}}
+            </div>
             <div class="layui-col-xs12">
                 <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in dataList">
                     <div class="layui-row">
                         <div class="layui-col-xs3">
-                            VIN：{{d.vin}}
+                            {{d.vin}}
                         </div>
                         <div class="layui-col-xs6">
-                            间隔：
-                            <i ng-if="d.isInterval" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="!d.isInterval" class="layui-icon layui-icon-close-fill red"></i>
-                            <span class="space"></span>
-                            转速：
-                            <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
-                            <span class="space"></span>
-                            定位：
-                            <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
-                            <span class="space"></span>
-                            超时：
-                            <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>
-                            <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
+                            <div style="display: inline;">
+                                定位状态：
+                                <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isLocate" class="layui-icon layui-icon-close-fill red"></i>
+                                <span class="space"></span>
+                            </div>
+                            <div style="display: inline;">
+                                超时检测：
+                                <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
+                                <span class="space"></span>
+                            </div>
+                            <div style="display: inline;">
+                                转速：
+                                <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
+                                <span class="space"></span>
+                            </div>
+                            <div style="display: inline;" ng-if="dtuType==1">
+                                扭矩：
+                                <i ng-if="d.isTorque" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isTorque" class="layui-icon layui-icon-close-fill red"></i>
+                            </div>
                         </div>
                         <div class="layui-col-xs3">
                             <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
@@ -75,21 +97,27 @@
         <div class="layui-row">
             <div class="layui-col-xs10 layui-col-xs-offset2">
                 <fieldset class="layui-elem-field layui-field-title">
-                    <legend>配置</legend>
+                    <legend>配置<i class="layui-icon layui-icon-set-fill"></i></legend>
                 </fieldset>
             </div>
             <div class="layui-col-xs12">
                 <form class="layui-form">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">转速</label>
+                        <label class="layui-form-label">超时时间</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.speed">
+                            <input type="text" class="layui-input" ng-model="config.overTime">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">超时</label>
+                        <label class="layui-form-label">发动机转速</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.overTime">
+                            <input type="text" class="layui-input" ng-model="config.engineSpeed">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" ng-if="dtuType==1">
+                        <label class="layui-form-label">摩擦扭矩</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input" ng-model="config.frictionTorque">
                         </div>
                     </div>
                 </form>
@@ -108,14 +136,13 @@
                             时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}
                         </div>
                         <div class="layui-col-xs3">
+                            定位：{{d.location}}
+                        </div>
+                        <div class="layui-col-xs2">
                             转速：{{d.speed}}
                         </div>
-                        <div class="layui-col-xs4">
-                            经纬度：{{d.lng+' , '+d.lat}}
-                        </div>
-                        <div class="layui-col-xs1">
-                            <span ng-if="d.lng!=0&&d.lat!=0">已定位</span>
-                            <span ng-if="d.lng==0||d.lat==0">未定位</span>
+                        <div class="layui-col-xs2" ng-if="dtuType==1">
+                            扭矩：{{d.torque}}
                         </div>
                     </div>
                 </blockquote>

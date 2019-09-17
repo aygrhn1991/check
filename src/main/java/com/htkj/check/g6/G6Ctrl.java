@@ -18,7 +18,7 @@ public class G6Ctrl {
 
     private ConfigModel configModel;
 
-    private List<DataModel> ldm = null;
+    private List<DataModel> vins = null;
 
     @RequestMapping("/index")
     public String index() {
@@ -35,15 +35,15 @@ public class G6Ctrl {
     @ResponseBody
     public boolean startCheck(@RequestBody ConfigModel cm) {
         configModel = cm;
-        ldm = new ArrayList<>();
+        vins = new ArrayList<>();
         for (String vin : configModel.vins) {
             DataModel dataModel = new DataModel();
             dataModel.vin = vin;
             dataModel.isOverTime = true;
             dataModel.datas = new ArrayList<>();
-            ldm.add(dataModel);
+            vins.add(dataModel);
         }
-        DtuMsgHandle.results = ldm;
+        DtuMsgHandle.vins = vins;
         DtuMsgHandle.config = configModel;
         DtuMsgHandle.on = true;
         return true;
@@ -59,7 +59,7 @@ public class G6Ctrl {
     @RequestMapping("/onLine")
     @ResponseBody
     public List<DataModel> onLine() {
-        return ldm;
+        return vins;
     }
 
 
@@ -67,8 +67,8 @@ public class G6Ctrl {
     public void checkOverTime() {
         if (DtuMsgHandle.on) {
             System.out.println("执行超时检测");
-            for (int i = 0; i < ldm.size(); i++) {
-                DataModel result = ldm.get(i);
+            for (int i = 0; i < vins.size(); i++) {
+                DataModel result = vins.get(i);
                 if (result.datas.size() <= 1) {
                     result.isOverTime = true;
                 } else {

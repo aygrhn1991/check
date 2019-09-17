@@ -13,6 +13,7 @@ import org.ht.iov.service.core.g6.Obd;
 import org.ht.iov.service.core.std.Lnglat;
 import org.ht.iov.service.core.std.VehIO;
 import org.ht.iov.service.core.tbox.TransformFactory;
+import org.ht.utils.core.Tuple2;
 import org.ht.utils.core.Tuple3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -70,7 +71,10 @@ public class DtuMsgTransform {
             case G6TransfromFactory.CMD_RT_UP:
                 //实时坐标消息
                 Tuple3<EngineData, Obd, Lnglat> rt = fac_g6.toRealTime(dp);
-                lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, rt));
+                if(rt.a==null){
+                    System.out.println(dp);
+                }
+                lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, new Tuple2<>(dp.getVin(),rt.a)));
 //                if (rt.getC() != null) {
 //                    lst.add(new MetaMsg<>(MetaMsg.DOWN_LNGLAT, rt.getC()));
 //                }

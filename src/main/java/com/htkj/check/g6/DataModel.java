@@ -6,9 +6,9 @@ public class DataModel {
     public String vin;
 
     public boolean isLocate;
-    public boolean isSpeed;
-    public boolean isInterval;
     public boolean isOverTime;
+    public boolean isSpeed;
+    public boolean isTorque;
 
     public boolean result;
 

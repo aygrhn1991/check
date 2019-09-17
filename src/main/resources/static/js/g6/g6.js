@@ -12,20 +12,32 @@ app.config(function ($routeProvider) {
 });
 app.controller('checkCtl', function ($scope, $http, $interval) {
     $scope.startCheck = function () {
-        if (isNull($scope.config.speed)) {
-            alert('请设置转速值');
+        if (isNull($scope.dtuType)) {
+            alert('请选择检测车辆类型');
             return;
         }
         if (isNull($scope.config.overTime)) {
             alert('请设置超时时间');
             return;
         }
-        if(!isNumber($scope.config.speed)){
+        if (isNull($scope.config.engineSpeed)) {
+            alert('请设置发动机转速值');
+            return;
+        }
+        if ($scope.dtuType == 1 && isNull($scope.config.frictionTorque)) {
+            alert('请设置摩擦扭矩值');
+            return;
+        }
+        if (!isNumber($scope.config.engineSpeed)) {
             alert('转速格式错误');
             return;
         }
-        if(!isNumber($scope.config.overTime)){
+        if (!isNumber($scope.config.overTime)) {
             alert('超时时间格式错误');
+            return;
+        }
+        if ($scope.dtuType == 1 && !isNumber($scope.config.frictionTorque)) {
+            alert('摩擦扭矩格式错误');
             return;
         }
         if ($scope.vinError) {
@@ -49,9 +61,11 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
         layer.msg('启动中！', {time: 1000});
         $http.post(window.context + '/g6/startCheck', {
-            speed: $scope.config.speed,
             overTime: $scope.config.overTime,
+            engineSpeed: $scope.config.engineSpeed,
+            frictionTorque: $scope.config.frictionTorque,
             vins: $scope.vinList,
+            dtuType: $scope.dtuType
         }).success(function (d) {
             console.log('开始检测：' + dateToYYMMDDHHMMSS(new Date($scope.timeStart)));
             $scope.isStart = true;
@@ -59,6 +73,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $scope.timeEnd = null;
             $scope.timeSeconds = null;
             $scope.timer = $interval(function () {
+                $scope.timeRefresh = dateToYYMMDDHHMMSS(new Date());
                 $http.post(window.context + '/g6/onLine').success(function (dd) {
                     dd.forEach(function (ee) {
                         ee.count = ee.datas.length;
@@ -77,6 +92,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $scope.isStart = false;
             $scope.timeEnd = new Date().getTime();
             $scope.timeSeconds = Math.floor(($scope.timeEnd - $scope.timeStart) / 1000) + 's';
+            $scope.timeRefresh = null;
             $interval.cancel($scope.timer);
         })
     };
@@ -102,11 +118,12 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $scope.vinError = false;
         }
     };
-    $scope.dataList = [];
     $scope.init = function () {
+        $scope.dtuType = null;
         $scope.timeStart = null;
         $scope.timeEnd = null;
         $scope.timeSeconds = null;
+        $scope.timeRefresh = null;
         $scope.isStart = false;
         $scope.vinError = false;
         $scope.vinList = [];
@@ -114,12 +131,9 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.dataList = [];
         $scope.subDataList = [];
         $scope.config = {
-            // vins: 'LBTEST00000001106,\n' +
-            //     'LBTEST00000001107,\n' +
-            //     'LBTEST00000001108,\n' +
-            //     'LBTEST00000001109,',
             vins: null,
-            speed: null,
+            engineSpeed: null,
+            frictionTorque: null,
             overTime: null,
         };
     };

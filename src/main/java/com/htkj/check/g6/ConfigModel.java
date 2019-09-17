@@ -3,7 +3,9 @@ package com.htkj.check.g6;
 import java.util.List;
 
 public class ConfigModel {
-    public int speed;
+    public DtuType dtuType;
+    public int engineSpeed;
+    public int frictionTorque;
     public int overTime;
     public List<String> vins;
 }

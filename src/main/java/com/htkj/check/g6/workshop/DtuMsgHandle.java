@@ -21,12 +21,12 @@ public class DtuMsgHandle {
 
     public static boolean on = false;
     public static ConfigModel config = null;
-    public static List<DataModel> results = null;
+    public static List<DataModel> vins = null;
 
     public void go(MetaMsg mm) {
         System.out.println(new Date().getTime());
         if (on && mm.order == MetaMsg.DOWN_LNGLAT) {
-            DataHandler.h(mm.getData(), config, results);
+            DataHandler.h(mm.getData(), config, vins);
         }
 
     }
