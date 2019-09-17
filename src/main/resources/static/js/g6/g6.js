@@ -96,21 +96,40 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $interval.cancel($scope.timer);
         })
     };
-    $scope.showList = function (e) {
+    $scope.showListModal = function (e) {
         $scope.subDataList = [];
         $scope.subDataList = e.datas;
-        layer.open({
+        $scope.modalIndex = layer.open({
             type: 1,
             title: e.vin + '(' + e.datas.length + '条)',
             shade: 0,
             area: '800px',
-            btn: ['关闭'],
-            content: $('#listModal'),
-            yes: function (index, layero) {
-                layer.close(index);
-            }
+            btn: [],
+            content: $('#listModal')
         });
     };
+    $scope.showPasswordModal = function () {
+        $scope.password = null;
+        $scope.modalIndex = layer.open({
+            type: 1,
+            title: '请输入管理员密码',
+            shade: 0,
+            area: '450px',
+            btn: [],
+            content: $('#passwordModal')
+        });
+    };
+    $scope.confirmPassword = function () {
+        if ($scope.password == '12345678') {
+            $scope.configEditable = true;
+            layer.close($scope.modalIndex);
+        } else {
+            alert('管理员密码错误');
+        }
+    }
+    $scope.updateConfig = function () {
+        $scope.configEditable = false;
+    }
     $scope.vinVerify = function () {
         if ($scope.config.vins.indexOf('，') != -1) {
             $scope.vinError = true;
@@ -119,6 +138,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
     };
     $scope.init = function () {
+        $scope.modalIndex = null;
         $scope.dtuType = null;
         $scope.timeStart = null;
         $scope.timeEnd = null;
@@ -126,6 +146,8 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.timeRefresh = null;
         $scope.isStart = false;
         $scope.vinError = false;
+        $scope.configEditable = false;
+        $scope.password = null;
         $scope.vinList = [];
         $scope.timer = null;
         $scope.dataList = [];
@@ -136,6 +158,10 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             frictionTorque: null,
             overTime: null,
         };
+
+        $http.post(window.context + '/g6/getConfigs').success(function (d) {
+
+        })
     };
     $scope.init();
 });

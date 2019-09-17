@@ -1,12 +1,17 @@
 package com.htkj.check.g6;
 
 import com.htkj.check.g6.workshop.DtuMsgHandle;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.File;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +20,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/g6")
 public class G6Ctrl {
+
+    @Value("${configFile}")
+    private String configFile;
 
     private ConfigModel configModel;
 
@@ -62,6 +70,16 @@ public class G6Ctrl {
         return vins;
     }
 
+
+    @RequestMapping("/getConfigs")
+    @ResponseBody
+    public Object getConfigs() {
+        PropertiesUtil.init(configFile);
+        //String ddd= PropertiesUtil.get("kkk");
+        PropertiesUtil.update("kkk","vvv123");
+        //System.out.println(ddd);
+        return  null;
+    }
 
     @Scheduled(fixedDelay = 5000)
     public void checkOverTime() {

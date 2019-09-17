@@ -21,13 +21,8 @@
                         ng-click="stopCheck()">停止检测
                 </button>
                 <span class="space"></span>
-                <span>
-                    开始时间：{{timeStart|date:'yyyy-MM-dd HH:mm:ss'}}
-                    <span class="space"></span>
-                    结束时间：{{timeEnd|date:'yyyy-MM-dd HH:mm:ss'}}
-                    <span class="space"></span>
-                    计时：{{timeSeconds}}
-                </span>
+                <span>开始时间：{{timeStart|date:'yyyy-MM-dd HH:mm:ss'}}<span class="space"></span>结束时间：{{timeEnd|date:'yyyy-MM-dd HH:mm:ss'}}<span
+                        class="space"></span>计时：{{timeSeconds}}</span>
             </div>
             <div class="layui-col-xs12" style="margin-bottom: 10px;" ng-if="isStart">
                 数据刷新时间：{{timeRefresh|date:'yyyy-MM-dd HH:mm:ss'}}
@@ -67,7 +62,7 @@
                             <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
                             <span ng-if="!d.result" class="layui-badge">失败</span>
                             <span class="space"></span>
-                            <span style="cursor: pointer;" ng-click="showList(d)">查看数据({{d.count}}条)</span>
+                            <span style="cursor: pointer;" ng-click="showListModal(d)">查看数据({{d.count}}条)</span>
                         </div>
                     </div>
                 </blockquote>
@@ -97,7 +92,12 @@
         <div class="layui-row">
             <div class="layui-col-xs10 layui-col-xs-offset2">
                 <fieldset class="layui-elem-field layui-field-title">
-                    <legend>配置<i class="layui-icon layui-icon-set-fill"></i></legend>
+                    <legend>配置
+                        <i class="layui-icon layui-icon-set-fill" style="cursor: pointer;"
+                           ng-click="showPasswordModal()"></i>
+                        <i class="layui-icon layui-icon-ok" style="cursor: pointer;" ng-click="updateConfig()"
+                           ng-if="configEditable"></i>
+                    </legend>
                 </fieldset>
             </div>
             <div class="layui-col-xs12">
@@ -105,19 +105,22 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">超时时间</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.overTime">
+                            <input type="text" class="layui-input" ng-model="config.overTime"
+                                   ng-disabled="!configEditable">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">发动机转速</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.engineSpeed">
+                            <input type="text" class="layui-input" ng-model="config.engineSpeed"
+                                   ng-disabled="!configEditable">
                         </div>
                     </div>
                     <div class="layui-form-item" ng-if="dtuType==1">
                         <label class="layui-form-label">摩擦扭矩</label>
                         <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.frictionTorque">
+                            <input type="text" class="layui-input" ng-model="config.frictionTorque"
+                                   ng-disabled="!configEditable">
                         </div>
                     </div>
                 </form>
@@ -146,6 +149,25 @@
                         </div>
                     </div>
                 </blockquote>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="passwordModal">
+        <div class="layui-row">
+            <div class="layui-col-xs12">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">管理员密码</label>
+                            <div class="layui-input-inline">
+                                <input type="text" class="layui-input" ng-model="password">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button class="layui-btn" ng-click="confirmPassword()">确定</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
