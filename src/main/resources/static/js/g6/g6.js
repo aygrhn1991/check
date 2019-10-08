@@ -16,7 +16,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             alert('请选择检测车辆类型');
             return;
         }
-        if (isNull($scope.config.overTime)) {
+        if (isNull($scope.config.inTime)) {
             alert('请设置超时时间');
             return;
         }
@@ -32,7 +32,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             alert('转速格式错误');
             return;
         }
-        if (!isNumber($scope.config.overTime)) {
+        if (!isNumber($scope.config.inTime)) {
             alert('超时时间格式错误');
             return;
         }
@@ -44,11 +44,11 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             alert('VIN格式错误');
             return;
         }
-        if (isNull($scope.config.vins)) {
+        if (isNull($scope.vinStr)) {
             alert('请输入待检VIN(1)');
             return;
         }
-        var vinListTemp = $scope.config.vins.split(',');
+        var vinListTemp = $scope.vinStr.split(',');
         $scope.vinList = [];
         vinListTemp.forEach(function (e) {
             if (!isNull(e.trim())) {
@@ -61,7 +61,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
         layer.msg('启动中！', {time: 1000});
         $http.post(window.context + '/g6/startCheck', {
-            overTime: $scope.config.overTime,
+            inTime: $scope.config.inTime,
             engineSpeed: $scope.config.engineSpeed,
             frictionTorque: $scope.config.frictionTorque,
             vins: $scope.vinList,
@@ -128,16 +128,36 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
     }
     $scope.updateConfig = function () {
-        $scope.configEditable = false;
+        $http.post(window.context + '/g6/saveConfig', Object.assign($scope.config, {dtuType: $scope.dtuType})).success(function (d) {
+            if (d == true) {
+                alert('保存成功');
+                $scope.configEditable = false;
+            }
+        })
+    }
+    $scope.getConfig = function () {
+        $http.post(window.context + '/g6/getConfigs').success(function (d) {
+            $scope.configs = d;
+        })
+    }
+    $scope.setConfig = function (e) {
+        $scope.dtuType = e;
+        if ($scope.dtuType == 0) {
+            $scope.config = $scope.configs.j6;
+        }
+        if ($scope.dtuType == 1) {
+            $scope.config = $scope.configs.j7;
+        }
     }
     $scope.vinVerify = function () {
-        if ($scope.config.vins.indexOf('，') != -1) {
+        if ($scope.vinStr.indexOf('，') != -1) {
             $scope.vinError = true;
         } else {
             $scope.vinError = false;
         }
     };
     $scope.init = function () {
+        $scope.configs = null;
         $scope.modalIndex = null;
         $scope.dtuType = null;
         $scope.timeStart = null;
@@ -149,19 +169,17 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.configEditable = false;
         $scope.password = null;
         $scope.vinList = [];
+        $scope.vinStr = null;
         $scope.timer = null;
         $scope.dataList = [];
         $scope.subDataList = [];
         $scope.config = {
-            vins: null,
             engineSpeed: null,
             frictionTorque: null,
-            overTime: null,
+            tankLevel:null,
+            inTime: null,
         };
-
-        $http.post(window.context + '/g6/getConfigs').success(function (d) {
-
-        })
+        $scope.getConfig();
     };
     $scope.init();
 });

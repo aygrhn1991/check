@@ -43,6 +43,14 @@ input[type="radio"] {
     cursor: pointer;
 }
 
+.fix-form-label {
+    width: 130px;
+}
+
+.fix-form-input {
+    margin-left: 160px;
+}
+
 /*以下为临时代码*/
 /**{*/
 /*    color: #fff !important;*/

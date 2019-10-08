@@ -22,17 +22,22 @@ public class DataHandler {
             double speed = eng.getEngineSpeed();
             long torque = eng.getFrictionTorque();
 
-            double lng = eng.getLongitude();
-            double lat = eng.getLatitude();
+            //double lng = eng.getLongitude();
+            //double lat = eng.getLatitude();
             Long l1 = System.currentTimeMillis();
             for (int i = 0; i < vins.size(); i++) {
                 DataModel result = vins.get(i);
                 //检查超时
                 if (result.datas.size() <= 1) {
-                    result.isOverTime = true;
+                    result.isInTime = true;
                 } else {
-                    System.out.println((new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000);
-                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= configModel.overTime;
+                    long nowSeconds=new Date().getTime();
+                    long lastSeconds=result.datas.get(result.datas.size() - 1).time;
+                    long diffSeconds=(nowSeconds-lastSeconds)/1000;
+                    result.isInTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 <= configModel.inTime;
+                    if(result.isInTime ==false){
+                        System.out.println("-------false-------");
+                    }
                 }
                 if (result.vin.equals(vin)) {
                     //存储数据
@@ -49,7 +54,7 @@ public class DataHandler {
                     //检查定位
                     int intp = (int) position;
                     int intr = (intp >> (1 - 1)) & 1;
-                    result.isLocate = intr == 1 ? true : false; //(position & 1) == 0;
+                    result.isLocate = intr == 0 ? true : false; //(position & 1) == 0;
                     //如果是J7，检查摩擦扭矩
                     if (configModel.dtuType == DtuType.J7) {
                         result.isTorque = torque == configModel.frictionTorque;
@@ -61,7 +66,10 @@ public class DataHandler {
 //                        result.isInterval = (time - result.datas.get(result.datas.size() - 1).time) / 1000 <= 1;
 //                    }
                     //总结论
-                    result.result = result.isSpeed && result.isLocate && result.isOverTime && (configModel.dtuType == DtuType.J7 ? result.isTorque : true);
+                    result.result = result.isSpeed && result.isLocate && result.isInTime && (configModel.dtuType == DtuType.J7 ? result.isTorque : true);
+                    System.out.println("--------------");
+                    System.out.println(result.result);
+
                 }
             }
             long l2 = System.currentTimeMillis();

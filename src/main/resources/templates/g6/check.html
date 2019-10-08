@@ -7,9 +7,11 @@
                     <label class="layui-form-label">车辆型号</label>
                     <div class="layui-input-block" style="padding-top: 9px;">
                         <div class="space"></div>
-                        <input type="radio" name="dtuType" value="0" ng-model="dtuType">&nbsp;J6
+                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(0)">&nbsp;J6
                         <div class="space"></div>
-                        <input type="radio" name="dtuType" value="1" ng-model="dtuType">&nbsp;J7
+                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(2)">&nbsp;J6压缩天然气
+                        <div class="space"></div>
+                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(1)">&nbsp;J7
                     </div>
                 </div>
             </div>
@@ -42,8 +44,8 @@
                             </div>
                             <div style="display: inline;">
                                 超时检测：
-                                <i ng-if="!d.isOverTime" class="layui-icon layui-icon-ok-circle green"></i>
-                                <i ng-if="d.isOverTime" class="layui-icon layui-icon-close-fill red"></i>
+                                <i ng-if="d.isInTime" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isInTime" class="layui-icon layui-icon-close-fill red"></i>
                                 <span class="space"></span>
                             </div>
                             <div style="display: inline;">
@@ -52,10 +54,15 @@
                                 <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
                                 <span class="space"></span>
                             </div>
-                            <div style="display: inline;" ng-if="dtuType==1">
+                            <div style="display: inline;" ng-if="dtuType==1||dtuType==2">
                                 扭矩：
                                 <i ng-if="d.isTorque" class="layui-icon layui-icon-ok-circle green"></i>
                                 <i ng-if="!d.isTorque" class="layui-icon layui-icon-close-fill red"></i>
+                            </div>
+                            <div style="display: inline;" ng-if="dtuType==2">
+                                油箱液位：
+                                <i ng-if="d.isOil" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isOil" class="layui-icon layui-icon-close-fill red"></i>
                             </div>
                         </div>
                         <div class="layui-col-xs3">
@@ -79,10 +86,10 @@
             <div class="layui-col-xs12">
                 <form class="layui-form">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">VIN</label>
-                        <div class="layui-input-block">
+                        <label class="layui-form-label fix-form-label">VIN</label>
+                        <div class="layui-input-block fix-form-input">
                             <textarea placeholder="例：LF000000000000001,LF000000000000002,LF000000000000003"
-                                      class="layui-textarea" ng-model="config.vins" ng-change="vinVerify()"></textarea>
+                                      class="layui-textarea" ng-model="vinStr" ng-change="vinVerify()"></textarea>
                             <p ng-if="vinError" style="color:red;">格式错误，请核对</p>
                         </div>
                     </div>
@@ -103,22 +110,22 @@
             <div class="layui-col-xs12">
                 <form class="layui-form">
                     <div class="layui-form-item">
-                        <label class="layui-form-label">超时时间</label>
-                        <div class="layui-input-block">
-                            <input type="text" class="layui-input" ng-model="config.overTime"
+                        <label class="layui-form-label fix-form-label">超时时间(s)</label>
+                        <div class="layui-input-block fix-form-input">
+                            <input type="text" class="layui-input" ng-model="config.inTime"
                                    ng-disabled="!configEditable">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">发动机转速</label>
-                        <div class="layui-input-block">
+                        <label class="layui-form-label fix-form-label">发动机转速(r/min)</label>
+                        <div class="layui-input-block fix-form-input">
                             <input type="text" class="layui-input" ng-model="config.engineSpeed"
                                    ng-disabled="!configEditable">
                         </div>
                     </div>
                     <div class="layui-form-item" ng-if="dtuType==1">
-                        <label class="layui-form-label">摩擦扭矩</label>
-                        <div class="layui-input-block">
+                        <label class="layui-form-label fix-form-label">摩擦扭矩(N·m)</label>
+                        <div class="layui-input-block fix-form-input">
                             <input type="text" class="layui-input" ng-model="config.frictionTorque"
                                    ng-disabled="!configEditable">
                         </div>

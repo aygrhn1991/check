@@ -1,20 +1,14 @@
 package com.htkj.check.g6;
 
 import com.htkj.check.g6.workshop.DtuMsgHandle;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.Resource;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.io.File;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 @Controller
@@ -47,7 +41,7 @@ public class G6Ctrl {
         for (String vin : configModel.vins) {
             DataModel dataModel = new DataModel();
             dataModel.vin = vin;
-            dataModel.isOverTime = true;
+            dataModel.isInTime = true;
             dataModel.datas = new ArrayList<>();
             vins.add(dataModel);
         }
@@ -73,24 +67,47 @@ public class G6Ctrl {
 
     @RequestMapping("/getConfigs")
     @ResponseBody
-    public Object getConfigs() {
+    public Map getConfigs() {
+        Map config = new HashMap<>();
+        Map j6 = new HashMap<>();
+        Map j7 = new HashMap<>();
         PropertiesUtil.init(configFile);
-        //String ddd= PropertiesUtil.get("kkk");
-        PropertiesUtil.update("kkk","vvv123");
-        //System.out.println(ddd);
-        return  null;
+        j6.put("inTime", PropertiesUtil.get("j6.inTime"));
+        j6.put("engineSpeed", PropertiesUtil.get("j6.engineSpeed"));
+        j7.put("inTime", PropertiesUtil.get("j7.inTime"));
+        j7.put("engineSpeed", PropertiesUtil.get("j7.engineSpeed"));
+        j7.put("frictionTorque", PropertiesUtil.get("j7.frictionTorque"));
+        config.put("j6", j6);
+        config.put("j7", j7);
+        return config;
+    }
+
+    @RequestMapping("/saveConfig")
+    @ResponseBody
+    public boolean saveConfig(@RequestBody ConfigModel config) {
+        PropertiesUtil.init(configFile);
+        if (config.dtuType == DtuType.J6) {
+            PropertiesUtil.update("j6.inTime", String.valueOf(config.inTime));
+            PropertiesUtil.update("j6.engineSpeed", String.valueOf(config.engineSpeed));
+        }
+        if (config.dtuType == DtuType.J7) {
+            PropertiesUtil.update("j7.inTime", String.valueOf(config.inTime));
+            PropertiesUtil.update("j7.engineSpeed", String.valueOf(config.engineSpeed));
+            PropertiesUtil.update("j7.frictionTorque", String.valueOf(config.frictionTorque));
+        }
+        return true;
     }
 
     @Scheduled(fixedDelay = 5000)
-    public void checkOverTime() {
+    public void checkInTime() {
         if (DtuMsgHandle.on) {
             System.out.println("执行超时检测");
             for (int i = 0; i < vins.size(); i++) {
                 DataModel result = vins.get(i);
                 if (result.datas.size() <= 1) {
-                    result.isOverTime = true;
+                    result.isInTime = true;
                 } else {
-                    result.isOverTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 >= configModel.overTime;
+                    result.isInTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 <= configModel.inTime;
                 }
             }
         }
