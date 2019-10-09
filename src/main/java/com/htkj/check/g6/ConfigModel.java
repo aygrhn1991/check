@@ -4,8 +4,9 @@ import java.util.List;
 
 public class ConfigModel {
     public DtuType dtuType;
-    public int engineSpeed;
-    public int frictionTorque;
     public int inTime;
+    public int engineSpeed;
+    public int tankLevel;
+    public int frictionTorque;
     public List<String> vins;
 }

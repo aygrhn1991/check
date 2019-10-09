@@ -16,38 +16,6 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             alert('请选择检测车辆类型');
             return;
         }
-        if (isNull($scope.config.inTime)) {
-            alert('请设置超时时间');
-            return;
-        }
-        if (isNull($scope.config.engineSpeed)) {
-            alert('请设置发动机转速值');
-            return;
-        }
-        if ($scope.dtuType == 1 && isNull($scope.config.frictionTorque)) {
-            alert('请设置摩擦扭矩值');
-            return;
-        }
-        if (!isNumber($scope.config.engineSpeed)) {
-            alert('转速格式错误');
-            return;
-        }
-        if (!isNumber($scope.config.inTime)) {
-            alert('超时时间格式错误');
-            return;
-        }
-        if ($scope.dtuType == 1 && !isNumber($scope.config.frictionTorque)) {
-            alert('摩擦扭矩格式错误');
-            return;
-        }
-        if ($scope.vinError) {
-            alert('VIN格式错误');
-            return;
-        }
-        if (isNull($scope.vinStr)) {
-            alert('请输入待检VIN(1)');
-            return;
-        }
         var vinListTemp = $scope.vinStr.split(',');
         $scope.vinList = [];
         vinListTemp.forEach(function (e) {
@@ -55,14 +23,11 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
                 $scope.vinList.push(e.trim());
             }
         });
-        if ($scope.vinList.length == 0) {
-            alert('请输入待检VIN(2)');
-            return;
-        }
         layer.msg('启动中！', {time: 1000});
         $http.post(window.context + '/g6/startCheck', {
             inTime: $scope.config.inTime,
             engineSpeed: $scope.config.engineSpeed,
+            tankLevel: $scope.config.tankLevel,
             frictionTorque: $scope.config.frictionTorque,
             vins: $scope.vinList,
             dtuType: $scope.dtuType
@@ -101,7 +66,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         $scope.subDataList = e.datas;
         $scope.modalIndex = layer.open({
             type: 1,
-            title: e.vin + '(' + e.datas.length + '条)',
+            title: e.vin + '(' + e.iccid + ')' + '(' + e.datas.length + '条)',
             shade: 0,
             area: '800px',
             btn: [],
@@ -128,7 +93,15 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
     }
     $scope.updateConfig = function () {
-        $http.post(window.context + '/g6/saveConfig', Object.assign($scope.config, {dtuType: $scope.dtuType})).success(function (d) {
+        var vinListTemp = $scope.vinStr.split(',');
+        $scope.vinList = [];
+        vinListTemp.forEach(function (e) {
+            if (!isNull(e.trim())) {
+                $scope.vinList.push(e.trim());
+            }
+        });
+        $http.post(window.context + '/g6/saveConfig',
+            Object.assign($scope.config, {dtuType: $scope.dtuType, vins: $scope.vinList})).success(function (d) {
             if (d == true) {
                 alert('保存成功');
                 $scope.configEditable = false;
@@ -138,6 +111,7 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
     $scope.getConfig = function () {
         $http.post(window.context + '/g6/getConfigs').success(function (d) {
             $scope.configs = d;
+            $scope.vinStr = d.vins;
         })
     }
     $scope.setConfig = function (e) {
@@ -146,6 +120,9 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
             $scope.config = $scope.configs.j6;
         }
         if ($scope.dtuType == 1) {
+            $scope.config = $scope.configs.j6_gas;
+        }
+        if ($scope.dtuType == 2) {
             $scope.config = $scope.configs.j7;
         }
     }
@@ -157,27 +134,27 @@ app.controller('checkCtl', function ($scope, $http, $interval) {
         }
     };
     $scope.init = function () {
-        $scope.configs = null;
-        $scope.modalIndex = null;
-        $scope.dtuType = null;
-        $scope.timeStart = null;
-        $scope.timeEnd = null;
-        $scope.timeSeconds = null;
-        $scope.timeRefresh = null;
-        $scope.isStart = false;
-        $scope.vinError = false;
-        $scope.configEditable = false;
-        $scope.password = null;
+        $scope.configs = null;//从rest加载的配置项
+        $scope.modalIndex = null;//modal索引，关闭时要传此作为参数
+        $scope.dtuType = null;//终端类型
+        $scope.timeStart = null;//开始时间
+        $scope.timeEnd = null;//结束时间
+        $scope.timeSeconds = null;//检测计时
+        $scope.timeRefresh = null;//数据刷新时间
+        $scope.isStart = false;//是否开始的标志
+        $scope.vinError = false;//vin格式错误警告
+        $scope.configEditable = false;//配置项的可编辑状态
+        $scope.password = null;//密码
         $scope.vinList = [];
-        $scope.vinStr = null;
+        $scope.vinStr = 'LBTEST00000001007';
         $scope.timer = null;
         $scope.dataList = [];
         $scope.subDataList = [];
         $scope.config = {
-            engineSpeed: null,
-            frictionTorque: null,
-            tankLevel:null,
             inTime: null,
+            engineSpeed: null,
+            tankLevel: null,
+            frictionTorque: null,
         };
         $scope.getConfig();
     };

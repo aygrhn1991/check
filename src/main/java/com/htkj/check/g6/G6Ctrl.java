@@ -70,14 +70,21 @@ public class G6Ctrl {
     public Map getConfigs() {
         Map config = new HashMap<>();
         Map j6 = new HashMap<>();
+        Map j6_gas = new HashMap<>();
         Map j7 = new HashMap<>();
         PropertiesUtil.init(configFile);
+        String vins = PropertiesUtil.get("vins");
         j6.put("inTime", PropertiesUtil.get("j6.inTime"));
         j6.put("engineSpeed", PropertiesUtil.get("j6.engineSpeed"));
+        j6_gas.put("inTime", PropertiesUtil.get("j6.gas.inTime"));
+        j6_gas.put("engineSpeed", PropertiesUtil.get("j6.gas.engineSpeed"));
+        j6_gas.put("tankLevel", PropertiesUtil.get("j6.gas.tankLevel"));
         j7.put("inTime", PropertiesUtil.get("j7.inTime"));
         j7.put("engineSpeed", PropertiesUtil.get("j7.engineSpeed"));
         j7.put("frictionTorque", PropertiesUtil.get("j7.frictionTorque"));
+        config.put("vins", vins);
         config.put("j6", j6);
+        config.put("j6_gas", j6_gas);
         config.put("j7", j7);
         return config;
     }
@@ -86,9 +93,19 @@ public class G6Ctrl {
     @ResponseBody
     public boolean saveConfig(@RequestBody ConfigModel config) {
         PropertiesUtil.init(configFile);
+        String vins = "";
+        for (String vin : config.vins) {
+            vins += vin + ",";
+        }
+        PropertiesUtil.update("vins", vins);
         if (config.dtuType == DtuType.J6) {
             PropertiesUtil.update("j6.inTime", String.valueOf(config.inTime));
             PropertiesUtil.update("j6.engineSpeed", String.valueOf(config.engineSpeed));
+        }
+        if (config.dtuType == DtuType.J6_GAS) {
+            PropertiesUtil.update("j6.gas.inTime", String.valueOf(config.inTime));
+            PropertiesUtil.update("j6.gas.engineSpeed", String.valueOf(config.engineSpeed));
+            PropertiesUtil.update("j6.gas.tankLevel", String.valueOf(config.tankLevel));
         }
         if (config.dtuType == DtuType.J7) {
             PropertiesUtil.update("j7.inTime", String.valueOf(config.inTime));

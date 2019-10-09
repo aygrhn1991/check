@@ -6,10 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.ht.iov.service.core.g6.DataPack_G6;
-import org.ht.iov.service.core.g6.EngineData;
-import org.ht.iov.service.core.g6.G6TransfromFactory;
-import org.ht.iov.service.core.g6.Obd;
+
+import org.ht.iov.service.core.g6.*;
 import org.ht.iov.service.core.std.Lnglat;
 import org.ht.iov.service.core.std.VehIO;
 import org.ht.iov.service.core.tbox.TransformFactory;
@@ -60,7 +58,7 @@ public class DtuMsgTransform {
         switch (dp.getCommandId()) {
             case G6TransfromFactory.CMD_LOGIN:
                 //登入消息
-                VehIO vehIn = fac_g6.toVehIn(dp);
+                LoginIn vehIn = fac_g6.toLoginIn(dp);
                 lst.add(new MetaMsg<>(MetaMsg.DOWN_LOGIN, vehIn));
                 break;
             case G6TransfromFactory.CMD_LOGOT:

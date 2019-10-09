@@ -9,9 +9,9 @@
                         <div class="space"></div>
                         <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(0)">&nbsp;J6
                         <div class="space"></div>
-                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(2)">&nbsp;J6压缩天然气
+                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(1)">&nbsp;J6压缩天然气
                         <div class="space"></div>
-                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(1)">&nbsp;J7
+                        <input type="radio" name="dtuType" value="{{dtuType}}" ng-click="setConfig(2)">&nbsp;J7
                     </div>
                 </div>
             </div>
@@ -32,10 +32,16 @@
             <div class="layui-col-xs12">
                 <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in dataList">
                     <div class="layui-row">
-                        <div class="layui-col-xs3">
-                            {{d.vin}}
+                        <div class="layui-col-xs8">
+                            VIN：{{d.vin}}（{{d.iccid==null?'未登录':('ICCID：'+d.iccid)}}）
                         </div>
-                        <div class="layui-col-xs6">
+                        <div class="layui-col-xs4" style="text-align: right;">
+                            <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
+                            <span ng-if="!d.result" class="layui-badge">失败</span>
+                            <span class="space"></span>
+                            <span style="cursor: pointer;" ng-click="showListModal(d)">查看数据({{d.count}}条)</span>
+                        </div>
+                        <div class="layui-col-xs12" style="padding-top: 10px;">
                             <div style="display: inline;">
                                 定位状态：
                                 <i ng-if="d.isLocate" class="layui-icon layui-icon-ok-circle green"></i>
@@ -49,27 +55,21 @@
                                 <span class="space"></span>
                             </div>
                             <div style="display: inline;">
-                                转速：
+                                发动机转速：
                                 <i ng-if="d.isSpeed" class="layui-icon layui-icon-ok-circle green"></i>
                                 <i ng-if="!d.isSpeed" class="layui-icon layui-icon-close-fill red"></i>
                                 <span class="space"></span>
                             </div>
-                            <div style="display: inline;" ng-if="dtuType==1||dtuType==2">
-                                扭矩：
+                            <div style="display: inline;" ng-if="dtuType==1">
+                                油箱液位：
+                                <i ng-if="d.isLevel" class="layui-icon layui-icon-ok-circle green"></i>
+                                <i ng-if="!d.isLevel" class="layui-icon layui-icon-close-fill red"></i>
+                            </div>
+                            <div style="display: inline;" ng-if="dtuType==2">
+                                摩擦扭矩：
                                 <i ng-if="d.isTorque" class="layui-icon layui-icon-ok-circle green"></i>
                                 <i ng-if="!d.isTorque" class="layui-icon layui-icon-close-fill red"></i>
                             </div>
-                            <div style="display: inline;" ng-if="dtuType==2">
-                                油箱液位：
-                                <i ng-if="d.isOil" class="layui-icon layui-icon-ok-circle green"></i>
-                                <i ng-if="!d.isOil" class="layui-icon layui-icon-close-fill red"></i>
-                            </div>
-                        </div>
-                        <div class="layui-col-xs3">
-                            <span ng-if="d.result" class="layui-badge layui-bg-green">通过</span>
-                            <span ng-if="!d.result" class="layui-badge">失败</span>
-                            <span class="space"></span>
-                            <span style="cursor: pointer;" ng-click="showListModal(d)">查看数据({{d.count}}条)</span>
                         </div>
                     </div>
                 </blockquote>
@@ -77,25 +77,25 @@
         </div>
     </div>
     <div class="layui-col-xs4">
-        <div class="layui-row">
-            <div class="layui-col-xs10 layui-col-xs-offset2">
-                <fieldset class="layui-elem-field layui-field-title">
-                    <legend>待检VIN（使用逗号,分隔）</legend>
-                </fieldset>
-            </div>
-            <div class="layui-col-xs12">
-                <form class="layui-form">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label fix-form-label">VIN</label>
-                        <div class="layui-input-block fix-form-input">
-                            <textarea placeholder="例：LF000000000000001,LF000000000000002,LF000000000000003"
-                                      class="layui-textarea" ng-model="vinStr" ng-change="vinVerify()"></textarea>
-                            <p ng-if="vinError" style="color:red;">格式错误，请核对</p>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
+        <!--        <div class="layui-row">-->
+        <!--            <div class="layui-col-xs10 layui-col-xs-offset2">-->
+        <!--                <fieldset class="layui-elem-field layui-field-title">-->
+        <!--                    <legend>待检VIN（使用逗号,分隔）</legend>-->
+        <!--                </fieldset>-->
+        <!--            </div>-->
+        <!--            <div class="layui-col-xs12">-->
+        <!--                <form class="layui-form">-->
+        <!--                    <div class="layui-form-item">-->
+        <!--                        <label class="layui-form-label fix-form-label">VIN</label>-->
+        <!--                        <div class="layui-input-block fix-form-input">-->
+        <!--                            <textarea placeholder="例：LF000000000000001,LF000000000000002,LF000000000000003"-->
+        <!--                                      class="layui-textarea" ng-model="vinStr" ng-change="vinVerify()"></textarea>-->
+        <!--                            <p ng-if="vinError" style="color:red;">格式错误，请核对</p>-->
+        <!--                        </div>-->
+        <!--                    </div>-->
+        <!--                </form>-->
+        <!--            </div>-->
+        <!--        </div>-->
         <div class="layui-row">
             <div class="layui-col-xs10 layui-col-xs-offset2">
                 <fieldset class="layui-elem-field layui-field-title">
@@ -109,6 +109,14 @@
             </div>
             <div class="layui-col-xs12">
                 <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label fix-form-label">VIN</label>
+                        <div class="layui-input-block fix-form-input">
+                            <textarea placeholder="使用逗号,分隔" class="layui-textarea" ng-model="vinStr"
+                                      ng-change="vinVerify()" ng-disabled="!configEditable"></textarea>
+                            <p ng-if="vinError" style="color:red;">格式错误，请核对</p>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label fix-form-label">超时时间(s)</label>
                         <div class="layui-input-block fix-form-input">
@@ -124,6 +132,13 @@
                         </div>
                     </div>
                     <div class="layui-form-item" ng-if="dtuType==1">
+                        <label class="layui-form-label fix-form-label">油箱液位(%)</label>
+                        <div class="layui-input-block fix-form-input">
+                            <input type="text" class="layui-input" ng-model="config.tankLevel"
+                                   ng-disabled="!configEditable">
+                        </div>
+                    </div>
+                    <div class="layui-form-item" ng-if="dtuType==2">
                         <label class="layui-form-label fix-form-label">摩擦扭矩(N·m)</label>
                         <div class="layui-input-block fix-form-input">
                             <input type="text" class="layui-input" ng-model="config.frictionTorque"
@@ -142,17 +157,25 @@
             <div class="layui-col-xs12 modal-scroll">
                 <blockquote class="layui-elem-quote layui-quote-nm" ng-repeat="d in subDataList">
                     <div class="layui-row">
-                        <div class="layui-col-xs4">
+                        <div style="display: inline;">
                             时间：{{d.time|date:'yyyy-MM-dd HH:mm:ss'}}
+                            <span class="space"></span>
                         </div>
-                        <div class="layui-col-xs3">
-                            定位：{{d.location}}
+                        <div style="display: inline;">
+                            定位状态：{{d.location}}
+                            <span class="space"></span>
                         </div>
-                        <div class="layui-col-xs2">
-                            转速：{{d.speed}}
+                        <div style="display: inline;">
+                            发动机转速：{{d.speed}}
+                            <span class="space"></span>
                         </div>
-                        <div class="layui-col-xs2" ng-if="dtuType==1">
-                            扭矩：{{d.torque}}
+                        <div style="display: inline;" ng-if="dtuType==1">
+                            油箱液位：{{d.level}}
+                            <span class="space"></span>
+                        </div>
+                        <div style="display: inline;" ng-if="dtuType==2">
+                            摩擦扭矩：{{d.torque}}
+                            <span class="space"></span>
                         </div>
                     </div>
                 </blockquote>

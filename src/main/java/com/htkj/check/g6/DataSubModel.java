@@ -5,5 +5,6 @@ public class DataSubModel {
     public long time;
     public double speed;
     public double torque;
+    public double level;
 
 }

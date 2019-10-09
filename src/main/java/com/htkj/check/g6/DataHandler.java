@@ -20,10 +20,9 @@ public class DataHandler {
             long position = eng.getPositioningState();
             long time = eng.getAttm().getTime();
             double speed = eng.getEngineSpeed();
+            double level = eng.getTankLevel();
             long torque = eng.getFrictionTorque();
 
-            //double lng = eng.getLongitude();
-            //double lat = eng.getLatitude();
             Long l1 = System.currentTimeMillis();
             for (int i = 0; i < vins.size(); i++) {
                 DataModel result = vins.get(i);
@@ -31,13 +30,10 @@ public class DataHandler {
                 if (result.datas.size() <= 1) {
                     result.isInTime = true;
                 } else {
-                    long nowSeconds=new Date().getTime();
-                    long lastSeconds=result.datas.get(result.datas.size() - 1).time;
-                    long diffSeconds=(nowSeconds-lastSeconds)/1000;
+                    long nowSeconds = new Date().getTime();
+                    long lastSeconds = result.datas.get(result.datas.size() - 1).time;
+                    long diffSeconds = (nowSeconds - lastSeconds) / 1000;
                     result.isInTime = (new Date().getTime() - result.datas.get(result.datas.size() - 1).time) / 1000 <= configModel.inTime;
-                    if(result.isInTime ==false){
-                        System.out.println("-------false-------");
-                    }
                 }
                 if (result.vin.equals(vin)) {
                     //存储数据
@@ -45,6 +41,7 @@ public class DataHandler {
                     dataSubModel.location = position;
                     dataSubModel.time = time;
                     dataSubModel.speed = speed;
+                    dataSubModel.level = level;
                     dataSubModel.torque = torque;
                     result.datas.add(dataSubModel);
                     //排序（不排序了，浪费资源，耗时）
@@ -55,21 +52,16 @@ public class DataHandler {
                     int intp = (int) position;
                     int intr = (intp >> (1 - 1)) & 1;
                     result.isLocate = intr == 0 ? true : false; //(position & 1) == 0;
+                    //如果是J6_GAS，检查油箱液位
+                    if (configModel.dtuType == DtuType.J6_GAS) {
+                        result.isLevel = level == configModel.tankLevel;
+                    }
                     //如果是J7，检查摩擦扭矩
                     if (configModel.dtuType == DtuType.J7) {
                         result.isTorque = torque == configModel.frictionTorque;
                     }
-                    //检查时间间隔
-//                    if (result.datas.size() <= 1) {
-//                        result.isInterval = false;
-//                    } else {
-//                        result.isInterval = (time - result.datas.get(result.datas.size() - 1).time) / 1000 <= 1;
-//                    }
                     //总结论
-                    result.result = result.isSpeed && result.isLocate && result.isInTime && (configModel.dtuType == DtuType.J7 ? result.isTorque : true);
-                    System.out.println("--------------");
-                    System.out.println(result.result);
-
+                    result.result = result.isSpeed && result.isLocate && result.isInTime && (configModel.dtuType == DtuType.J6_GAS ? result.isLevel : true) && (configModel.dtuType == DtuType.J7 ? result.isTorque : true);
                 }
             }
             long l2 = System.currentTimeMillis();
