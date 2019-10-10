@@ -6,7 +6,7 @@ public class ConfigModel {
     public DtuType dtuType;
     public int inTime;
     public int engineSpeed;
-    public int tankLevel;
+    public double tankLevel;
     public int frictionTorque;
     public List<String> vins;
 }

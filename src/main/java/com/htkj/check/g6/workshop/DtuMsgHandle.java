@@ -36,6 +36,12 @@ public class DtuMsgHandle {
                 if (v.vin.equals(vin)) {
                     if (v.iccid == null || !v.iccid.equals(iccid)) {
                         v.iccid = iccid;
+                        v.isInTime = true;
+                        v.isLocate = false;
+                        v.isSpeed = false;
+                        v.isTorque = false;
+                        v.isLevel = false;
+                        v.result = false;
                         v.datas = new ArrayList<>();
                     }
                 }
