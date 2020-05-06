@@ -1,6 +1,7 @@
 package com.htkj.check.g6;
 
 import com.htkj.check.g6.workshop.DtuMsgHandle;
+import com.htkj.check.g6.zmq.FlowCounter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 @Controller
@@ -117,7 +120,10 @@ public class G6Ctrl {
 
     @Scheduled(fixedDelay = 5000)
     public void checkInTime() {
+
+        Logger.getLogger(G6Ctrl.class.getName()).log(Level.INFO, "checkInTime_out");
         if (DtuMsgHandle.on) {
+            Logger.getLogger(G6Ctrl.class.getName()).log(Level.INFO, "checkInTime_on");
             System.out.println("执行超时检测");
             for (int i = 0; i < vins.size(); i++) {
                 DataModel result = vins.get(i);

@@ -54,7 +54,7 @@ public class DataHandler {
                     result.isLocate = intr == 0 ? true : false; //(position & 1) == 0;
                     //如果是J6_GAS，检查油箱液位
                     if (configModel.dtuType == DtuType.J6_GAS) {
-                        result.isLevel = level == configModel.tankLevel;
+                        result.isLevel = Math.floor(level) == Math.floor(configModel.tankLevel);
                     }
                     //如果是J7，检查摩擦扭矩
                     if (configModel.dtuType == DtuType.J7) {
